@@ -1,0 +1,12 @@
+<form class="flex flex-col gap-2">
+    <app-form-control>
+        <label label for="email">E-mail</label>
+        <input autocomplete="email" input type="text" name="email" id="email">
+        <app-form-error error>E-mail is required</app-form-error>
+    </app-form-control>
+    <app-form-control>
+        <label label for="password">Password</label>
+        <input autocomplete="current-password" input type="password" name="password" id="password">
+    </app-form-control>
+    <button class="btn self-center" type="submit">Sign-In</button>
+</form>

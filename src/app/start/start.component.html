@@ -1,0 +1,58 @@
+<main>
+    <div class="p-5 flex flex-col w-full h-screen bg-people bg-cover bg-center bg-tea-green">
+        <div class="h-full  flex flex-col md:flex-row justify-center items-center gap-2 md:gap-0">
+            <div class="w-full md:w-5/12 flex flex-col items-center">
+                <h1 class="text-6xl md:text-7xl lg:text-8xl font-bold">NG-SOCIAL</h1>
+                <h2
+                    class="w-full md:w-auto p-3 mt-3 text-center text-2xl lg:text-3xl rounded bg-tea-green bg-opacity-70 font-semibold">
+                    <span class="text-white">Connect
+                        easily
+                        with new </span><span>people</span>
+                </h2>
+            </div>
+            <div
+                class="start-chat w-full md:w-6/12 p-5 flex flex-col gap-2 rounded shadow-xl bg-tea-green bg-opacity-70">
+                <ul class="flex flex-col items-start gap-2">
+                    <li *ngFor="let feature of features; let i = index" [ngClass]="i % 2 == 1 ? 'self-end bg-buff' : ''"
+                        class="info-link">
+                        <h3>{{feature.description}}</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" [attr.d]="feature.icon" />
+                        </svg>
+                    </li>
+                    <h3 class="ml-1 mt-3 animate-bounce"><i>Your new friend is typing...</i></h3>
+                </ul>
+                <div
+                    class="flex p-3 items-center justify-between h-full w-full text-lg shadow bg-tea-green rounded-full">
+                    <i>Write...</i>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    </svg>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-5 w-full h-screen md:h-screen flex justify-center items-center">
+        <div class="w-full md:w-4/5 h-4/5 flex md:justify-between">
+            <div class="hidden md:block w-2/5 h-full bg-cover rounded-lg bg-people-2"></div>
+            <div class="w-full md:w-2/4 flex flex-col justify-center md:justify-between">
+                <div class="w-full">
+                    <h3 class="text-3xl">Sing In</h3>
+                    <hr>
+                    <app-sign-in></app-sign-in>
+                </div>
+                <div class="w-full">
+                    <h3 class="text-3xl">Sing Up</h3>
+                    <hr>
+                    <app-sign-up></app-sign-up>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>
+<app-footer></app-footer>

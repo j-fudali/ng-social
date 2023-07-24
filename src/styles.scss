@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+  font-family: "Abel";
+  src: local("Oxygen"), url(./assets/fonts/Abel-Regular.ttf) format("truetype");
+}
+@layer base {
+  html {
+    font-family: "Abel";
+  }
+}
+@layer components {
+  a {
+    @apply hover:text-white;
+  }
+  input {
+    @apply p-1 border-2 border-buff rounded focus:border-tea-green outline-none transition;
+  }
+  .info-link {
+    @apply flex gap-1 p-4 rounded-full shadow bg-beige text-base w-auto;
+  }
+  .btn {
+    @apply p-2 rounded-full shadow text-lg bg-tea-green hover:bg-buff hover:text-white transition;
+  }
+  .btn-arrow {
+    @apply p-2 hover:scale-125 hover:bg-buff hover:text-white transition  bg-tea-green shadow-lg rounded-full;
+  }
+  .form-error {
+    @apply text-red-700;
+  }
+}
