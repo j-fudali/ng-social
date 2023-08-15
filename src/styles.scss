@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@ctrl/ngx-emoji-mart/picker";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,22 +13,34 @@
   }
 }
 @layer components {
-  a {
-    @apply hover:text-white;
-  }
   input {
     @apply p-1 border-2 border-buff rounded focus:border-tea-green outline-none transition;
   }
   .info-link {
     @apply flex gap-1 p-4 rounded-full shadow bg-beige text-base w-auto;
   }
-  .btn {
-    @apply p-2 rounded-full shadow text-lg bg-tea-green hover:bg-buff hover:text-white transition;
+  .btn-primary {
+    @apply flex items-center gap-1 p-2 rounded-lg shadow text-sm md:text-lg bg-tea-green hover:bg-buff hover:text-white transition;
+  }
+  .btn-outline {
+    @apply flex items-center gap-1 p-1 rounded-lg shadow text-sm md:text-lg border-2 border-tea-green hover:text-buff hover:border-buff transition;
+  }
+  .btn-icon {
+    @apply hover:text-buff transition-colors;
   }
   .btn-arrow {
     @apply p-2 hover:scale-125 hover:bg-buff hover:text-white transition  bg-tea-green shadow-lg rounded-full;
   }
   .form-error {
     @apply text-red-700;
+  }
+  .tag {
+    @apply p-1 border rounded-full shadow bg-cornsilk text-sm md:text-base;
+  }
+  .thumbnail {
+    @apply rounded-full shadow overflow-hidden w-10 h-10;
+  }
+  .message {
+    @apply max-w-[75%] flex-1 p-2 flex flex-col justify-between rounded-xl border-2 shadow;
   }
 }

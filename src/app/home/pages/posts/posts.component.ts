@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PostsSliderComponent } from '../../components/posts-slider/posts-slider.component';
+import { PostsSliderComponent } from './components/posts-slider/posts-slider.component';
 
 @Component({
   standalone: true,

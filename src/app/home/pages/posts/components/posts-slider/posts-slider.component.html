@@ -1,0 +1,23 @@
+<div class="relative">
+    <div class="overflow-hidden">
+        <div [style.transform]="(isMediumBreakpoint ? 'translateX(calc((50%)*' : 'translateX(calc((100%)*' ) + actualPost + '))'"
+            class="flex transition-transform min-w-full">
+            <app-post *ngFor="let post of posts" class="p-5"
+                [ngClass]="(isMediumBreakpoint ? 'flex-1/2' : 'flex-shrink-0 flex-grow-0 w-full mx-auto')"></app-post>
+        </div>
+        <button *ngIf="actualPost < 0" (click)="prev()" class="btn-arrow absolute top-1/2 left-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-3 lg:w-6 h-3 lg:h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </button>
+
+        <button *ngIf="actualPost*(-1) < posts.length - (isMediumBreakpoint ? 2 : 1)" (click)="next()"
+            class="btn-arrow absolute top-1/2 right-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-3 lg:w-6 h-3 lg:h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+        </button>
+    </div>
+</div>

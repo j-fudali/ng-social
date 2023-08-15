@@ -1,0 +1,33 @@
+<div class="flex flex-col gap-5">
+    <div class="sticky top-0 z-10 bg-white dark:bg-slate-600">
+        <div class="mb-2 w-full flex flex-wrap justify-start items-center gap-4">
+            <h2 class="text-3xl md:text-4xl">Group name</h2>
+            <app-search-bar class="flex-auto"></app-search-bar>
+        </div>
+        <hr>
+        <p class="my-2 flex-auto">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At labore voluptatem soluta
+            ipsum dolorum nam eum provident pariatur itaque ad. Doloribus id enim, ratione ipsa repellendus quidem
+            eum deserunt vitae.</p>
+        <hr>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-2">
+        <div class="h-96 flex-col flex gap-2 border p-2 rounded shadow">
+            <div>
+                <h3 class="text-xl font-bold">Participants</h3>
+                <hr>
+            </div>
+            <app-people-list class="overflow-y-scroll"></app-people-list>
+        </div>
+        <div>
+            <app-new-post-form></app-new-post-form>
+        </div>
+        <app-post></app-post>
+        <app-post></app-post>
+        <app-post></app-post>
+        <app-post></app-post>
+        <app-post></app-post>
+        <app-post></app-post>
+        <app-post></app-post>
+    </div>
+
+</div>
