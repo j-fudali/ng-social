@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-new-message',
@@ -10,6 +15,24 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
   styleUrls: ['./new-message.component.scss'],
 })
 export class NewMessageComponent {
-  text = new FormControl();
-  files = new FormControl();
+  private fb = inject(FormBuilder);
+  imagesPreview: string[] = [];
+  newMessageForm = this.fb.group({
+    text: ['', Validators.required],
+    files: [[], Validators.required],
+  });
+  onImagesSelect(event: Event) {
+    const images = (event.target as any).files;
+    for (let img of images) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagesPreview.push(e.target.result);
+      };
+      reader.readAsDataURL(img);
+    }
+    console.log(this.imagesPreview);
+  }
+  remove(index: number) {
+    this.imagesPreview.splice(index, 1);
+  }
 }

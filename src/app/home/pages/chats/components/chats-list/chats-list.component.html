@@ -1,14 +1,16 @@
-<ul class="h-full flex flex-col bg-white border border-tea-green rounded shadow overflow-y-auto">
-    <li [routerLink]="['/home/chats/1']"
+<ul class="h-full flex flex-col bg-white dark:bg-slate-700 border border-tea-green rounded shadow overflow-y-auto">
+    <li [routerLink]="[chat._id]" *ngFor="let chat of chats" (click)="hideChatsList()"
         class="border-b p-2 flex flex-col  hover:bg-tea-green hover:cursor-pointer transition-colors dark:bg-slate-700 dark:hover:bg-buff">
-        <h3 class="w-full text-base md:text-lg font-bold">Nazwa</h3>
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque veniam sapiente nihil, praesentium
-            numquam facere.
-        </p>
-        <div class="flex gap-1 justify-end items-end">
+        <h3 class="w-full text-base md:text-lg font-bold">{{chat.name}}</h3>
+        <!-- Participants -->
+        <!-- <ul>
+            <li></li>
+        </ul> -->
+        <!-- Last Message -->
+        <!-- <div class="flex gap-1 justify-end items-end">
             <span>Janusz Kowalski</span>
             <small>01.01.2023</small>
-        </div>
+        </div> -->
     </li>
 
 </ul>

@@ -41,6 +41,6 @@
     @apply rounded-full shadow overflow-hidden w-10 h-10;
   }
   .message {
-    @apply max-w-[75%] flex-1 p-2 flex flex-col justify-between rounded-xl border-2 shadow;
+    @apply max-w-[90%] md:max-w-[55%] flex-1 p-2 flex flex-col justify-between rounded-xl border-2 shadow;
   }
 }

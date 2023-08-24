@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PostComponent } from '../../../../../shared/post/post.component';
+import { PostComponent } from 'src/app/shared/components/post/post.component';
 
 @Component({
   selector: 'app-posts-slider',

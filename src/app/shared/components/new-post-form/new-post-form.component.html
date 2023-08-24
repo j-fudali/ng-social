@@ -1,8 +1,8 @@
 <form [formGroup]="newPostForm" (ngSubmit)="submit()" class="flex flex-col border rounded shadow h-full py-2">
     <h2 class="text"></h2>
     <textarea (keyup)="setCursorPosition($event)" (mouseup)="setCursorPosition($event)" formControlName="postText"
-        class="overflow-hidden w-full h-3/4 outline-none resize-none px-2" placeholder="Add new post..."
-        name="description" id="description"></textarea>
+        class="overflow-hidden w-full h-3/4 outline-none bg-white dark:bg-slate-600 resize-none px-2"
+        placeholder="Add new post..." name="description" id="description"></textarea>
     <hr>
     <div class="self-end flex gap-1 p-2">
         <button type="button" (click)="open()">

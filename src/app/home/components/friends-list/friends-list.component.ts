@@ -1,10 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { animate, style, transition, trigger } from '@angular/animations';
-import { SearchBarComponent } from 'src/app/shared/search-bar/search-bar.component';
 import { Store } from '@ngrx/store';
 import { FriendsListActions } from 'src/app/shared/store/friends-list';
-import { PeopleListComponent } from 'src/app/shared/people-list/people-list.component';
+import { PeopleListComponent } from 'src/app/shared/components/people-list/people-list.component';
+import { SearchBarComponent } from 'src/app/shared/components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-friends-list',

@@ -8,7 +8,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { NavComponentActions } from '../store/nav';
+import { NavComponentActions } from '../../store/nav';
 
 @Component({
   selector: 'app-side-nav',

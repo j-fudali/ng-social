@@ -1,6 +1,6 @@
 <div class="h-screen flex flex-col">
     <div class="flex items-center gap-1">
-        <button class="btn-icon" (click)="toggle()">
+        <button class="block md:hidden btn-icon" (click)="toggle()">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -12,10 +12,9 @@
     </div>
     <hr>
     <div class="relative mt-2 flex gap-5 h-3/4">
-        <app-chats-list *ngIf="openedChatsList"
+        <app-chats-list (hideChatsListEvent)="toggle()" [chats]="chats$" *ngIf="openedChatsList || isMediumBreakpoint"
             class="absolute top-0 left-0 z-10 w-full md:static md:w-1/3 h-full"></app-chats-list>
         <div class="w-full h-full">
             <router-outlet></router-outlet>
         </div>
     </div>
-</div>

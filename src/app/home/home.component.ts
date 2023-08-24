@@ -1,12 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../shared/header/header.component';
-import { FooterComponent } from '../shared/footer/footer.component';
 import { RouterModule } from '@angular/router';
-import { NavComponent } from '../shared/nav/nav.component';
 import { Store } from '@ngrx/store';
 import { isOpen } from '../shared/store/nav';
-import { SideNavComponent } from '../shared/side-nav/side-nav.component';
 import { HeaderComponentActions, isDark } from '../shared/store/header';
 import {
   FriendsListActions,
@@ -14,6 +10,10 @@ import {
 } from '../shared/store/friends-list';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { FriendsListComponent } from './components/friends-list/friends-list.component';
+import { FooterComponent } from '../shared/components/footer/footer.component';
+import { HeaderComponent } from '../shared/components/header/header.component';
+import { NavComponent } from '../shared/components/nav/nav.component';
+import { SideNavComponent } from '../shared/components/side-nav/side-nav.component';
 
 @Component({
   standalone: true,

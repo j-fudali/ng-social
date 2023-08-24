@@ -18,8 +18,8 @@ import {
 } from '@angular/animations';
 import { NavComponent } from '../nav/nav.component';
 import { Store } from '@ngrx/store';
-import { NavComponentActions } from '../store/nav';
-import { HeaderComponentActions } from '../store/header';
+import { HeaderComponentActions } from '../../store/header';
+import { NavComponentActions } from '../../store/nav';
 
 @Component({
   selector: 'app-header',
