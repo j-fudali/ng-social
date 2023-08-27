@@ -16,7 +16,7 @@
         </div>
         <div class="flex gap-2">
             <button class="btn-primary" @preventInitialAnimationRun (click)="toggleTheme()">
-                <div @rotate *ngIf="!isDark; else night" class="flex gap-1 items-center">
+                <div @rotate *ngIf="!darkMode; else night" class="flex gap-1 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -35,7 +35,7 @@
                     </div>
                 </ng-template>
             </button>
-            <button class="btn-outline px-2">
+            <button (click)="logout()" class="btn-outline px-2">
                 <span>Log-out</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">

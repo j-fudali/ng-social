@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { isOpen } from '../shared/store/nav';
+import { NavComponentActions, isOpen } from '../shared/store/nav';
 import { HeaderComponentActions, isDark } from '../shared/store/header';
 import {
   FriendsListActions,
@@ -14,6 +14,7 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { NavComponent } from '../shared/components/nav/nav.component';
 import { SideNavComponent } from '../shared/components/side-nav/side-nav.component';
+import { UserActions } from '../shared/store/user';
 
 @Component({
   standalone: true,
@@ -63,7 +64,7 @@ export class HomeComponent implements OnInit {
     this.store.dispatch(
       localStorage.getItem('darkMode') === 'true'
         ? HeaderComponentActions.dark()
-        : HeaderComponentActions.white()
+        : HeaderComponentActions.light()
     );
   }
   toggle() {
@@ -71,5 +72,17 @@ export class HomeComponent implements OnInit {
   }
   openFriendsList() {
     this.store.dispatch(FriendsListActions.open());
+  }
+  logout() {
+    this.store.dispatch(UserActions.logOut());
+  }
+  openSidenav() {
+    this.store.dispatch(NavComponentActions.open());
+  }
+  toggleTheme(darkMode: boolean) {
+    this.store.dispatch(
+      darkMode ? HeaderComponentActions.dark() : HeaderComponentActions.light()
+    );
+    localStorage.setItem('darkMode', darkMode ? 'true' : 'false');
   }
 }

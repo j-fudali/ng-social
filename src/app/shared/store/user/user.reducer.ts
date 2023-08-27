@@ -3,15 +3,24 @@ import { UserActions } from './user.actions';
 
 export interface UserState {
   isLoggedIn: boolean;
-  user: any; //User
-  errorMessage: string | null;
+  loading: boolean;
 }
 export const initialState: UserState = {
   isLoggedIn: false,
-  user: null,
-  errorMessage: null,
+  loading: false,
 };
 export const userReducer = createReducer(
   initialState,
-  on(UserActions.logIn, (state) => state)
+  on(UserActions.logIn, UserActions.register, (state) => ({
+    isLoggedIn: state.isLoggedIn,
+    loading: true,
+  })),
+  on(UserActions.logInSuccess, UserActions.registerSuccess, (state) => ({
+    isLoggedIn: true,
+    loading: false,
+  })),
+  on(UserActions.logInFailure, UserActions.registerFailure, (state) => ({
+    isLoggedIn: state.isLoggedIn,
+    loading: false,
+  }))
 );

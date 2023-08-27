@@ -1,0 +1,79 @@
+<div class="w-full">
+    <h3 class="text-3xl">Sing Up</h3>
+    <hr>
+    <form [formGroup]="signUpForm" (ngSubmit)="signUp()" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div class="flex flex-col">
+            <label for="newEmail">E-mail</label>
+            <input formControlName="email" type="text" name="newEmail" id="newEmail">
+            <div *ngIf="email && email.invalid && (email.dirty || email.touched)">
+                <app-form-error *ngIf="email.hasError('required')">E-mail required</app-form-error>
+                <app-form-error *ngIf="email.hasError('email')">Bad format of e-mail</app-form-error>
+                <app-form-error *ngIf="email.hasError('emailExists')">E-mail exists</app-form-error>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <label for="newUsername">Username</label>
+            <input formControlName="username" type="text" name="newUsername" id="newUsername">
+            <div *ngIf="username && username.invalid && (username.dirty || username.touched)">
+                <app-form-error *ngIf="username.hasError('required')">Username required</app-form-error>
+                <app-form-error *ngIf="username.hasError('usernameExists')">Username exists</app-form-error>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <label for="firstname">First name</label>
+            <input formControlName="firstname" type="text" name="firstname" id="firstname">
+            <div *ngIf="firstname && firstname.invalid && (firstname.dirty || firstname.touched)">
+                <app-form-error *ngIf="firstname.hasError('required')">Firstname is required</app-form-error>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <label for="lastname">Last name</label>
+            <input formControlName="lastname" type="text" name="lastname" id="lastname">
+            <div *ngIf="lastname && lastname.invalid && (lastname.dirty || lastname.touched)">
+                <app-form-error *ngIf="lastname.hasError('required')">Lastname is required</app-form-error>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <label for="birthDate">Birth date</label>
+            <input [max]="maxDatepickerValue" formControlName="birthdate" type="date" name="birthDate" id="birthDate">
+            <div *ngIf="birthdate && birthdate.invalid && (birthdate.dirty || birthdate.touched)">
+                <app-form-error *ngIf="birthdate.hasError('required')">Birthdate is required</app-form-error>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <label for="phone">Phone</label>
+            <input formControlName="phone" type="tel" name="phone" id="phone">
+            <div *ngIf="phone && phone.invalid && (phone.dirty || phone.touched)">
+                <app-form-error *ngIf="phone.hasError('required')">Phone is required</app-form-error>
+                <app-form-error *ngIf="phone.hasError('maxlength')">Phone has to include 9 digits</app-form-error>
+                <app-form-error *ngIf="phone.hasError('pattern')">Phone has to include only digits</app-form-error>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <label for="password">New password</label>
+            <input formControlName="password" autocomplete="new-password" type="password" name="password" id="password">
+            <div *ngIf="password && password.invalid && (password.dirty || password.touched)">
+                <app-form-error *ngIf="password.hasError('required')">Password is required</app-form-error>
+                <app-form-error *ngIf="password.hasError('pattern')">Password must include: 1 big, 1 small letter, 1
+                    number
+                    and 1 special character</app-form-error>
+            </div>
+        </div>
+        <div class="flex flex-col">
+            <label for="repeatPassword">Repeat password</label>
+            <input formControlName="repeatPassword" autocomplete="repeat-password" type="password" name="repeatPassword"
+                id="repeatPassword">
+            <div class="flex flex-col" *ngIf="repeatPassword &&  (repeatPassword.dirty || repeatPassword.touched)">
+                <app-form-error *ngIf="repeatPassword.invalid && repeatPassword.hasError('required')">Password is
+                    required</app-form-error>
+                <app-form-error *ngIf="signUpForm.hasError('notMatch')">Passwords not match</app-form-error>
+            </div>
+        </div>
+        <div class="sm:col-start-2 sm:col-end-3 flex justify-end">
+            <app-toggle-button formControlName="visibility" [name]="'Visibility'"></app-toggle-button>
+        </div>
+        <div class="col-span-full  ">
+            <button type="submit" class="text-lg md:text-base btn-outline mx-auto">Sign-Up</button>
+        </div>
+    </form>
+</div>

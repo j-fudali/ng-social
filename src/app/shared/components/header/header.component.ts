@@ -2,8 +2,12 @@ import {
   AfterContentInit,
   AfterViewChecked,
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
+  EventEmitter,
+  Input,
   OnInit,
+  Output,
   inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -19,7 +23,6 @@ import {
 import { NavComponent } from '../nav/nav.component';
 import { Store } from '@ngrx/store';
 import { HeaderComponentActions } from '../../store/header';
-import { NavComponentActions } from '../../store/nav';
 
 @Component({
   selector: 'app-header',
@@ -40,25 +43,21 @@ import { NavComponentActions } from '../../store/nav';
       ),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
-  private store = inject(Store);
-  isDark: boolean = false;
+export class HeaderComponent {
+  @Output() onLogout = new EventEmitter<void>();
+  @Output() onOpenSidenav = new EventEmitter<void>();
+  @Output() onToggleTheme = new EventEmitter<boolean>();
+  @Input() darkMode: boolean = false;
+
   toggleTheme() {
-    this.isDark = !this.isDark;
-    this.store.dispatch(
-      this.isDark
-        ? HeaderComponentActions.dark()
-        : HeaderComponentActions.white()
-    );
-    localStorage.setItem('darkMode', this.isDark ? 'true' : 'false');
+    this.onToggleTheme.emit(!this.darkMode);
   }
   openNav() {
-    this.store.dispatch(NavComponentActions.open());
+    this.onOpenSidenav.emit();
   }
-  ngOnInit(): void {
-    localStorage.getItem('darkMode') === 'true'
-      ? (this.isDark = true)
-      : (this.isDark = false);
+  logout() {
+    this.onLogout.emit();
   }
 }

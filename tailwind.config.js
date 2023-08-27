@@ -7,9 +7,6 @@ module.exports = {
       flex: {
         "1/2": "0 0 50%",
       },
-      animation: {
-        "pulse-slow": "pulse 5s linear infinite",
-      },
       backgroundImage: {
         people:
           "linear-gradient(to left, rgb(204, 213, 174, 0.7), rgb(212, 163, 115, 0.7)), url('src/assets/people.jpg')",

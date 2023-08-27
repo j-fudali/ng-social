@@ -1,0 +1,27 @@
+<div class="w-full">
+    <h3 class="text-3xl">Sing In</h3>
+    <hr>
+    <form [formGroup]="loginForm" (ngSubmit)="submit()" class="flex flex-col gap-2">
+        <app-form-control>
+            <label label for="username">Username</label>
+            <input input formControlName="username" autocomplete="username" type="text" name="username" id="username">
+            <div class="flex flex-col gap-1" error
+                *ngIf="username && username.invalid && (username.dirty || username.touched)">
+                <app-form-error *ngIf="username.hasError('required')">Username is required</app-form-error>
+            </div>
+        </app-form-control>
+        <app-form-control>
+            <label label for="password">Password</label>
+            <input input formControlName="password" autocomplete="current-password" type="password" name="password"
+                id="password">
+            <div class="flex flex-col gap-1" error
+                *ngIf="password && password.invalid && (password.dirty || password.touched)">
+                <app-form-error *ngIf="password.hasError('required')">Password is required</app-form-error>
+                <app-form-error *ngIf="password.hasError('pattern')">Password must include: 1 big, 1 small letter, 1
+                    number
+                    and 1 special character</app-form-error>
+            </div>
+        </app-form-control>
+        <button class="text-lg md:text-base btn-outline self-center" type="submit">Sign-In</button>
+    </form>
+</div>

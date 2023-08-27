@@ -10,5 +10,5 @@ export const initialState: HeaderComponentState = {
 export const headerComponentReducer = createReducer(
   initialState,
   on(HeaderComponentActions.dark, (state) => ({ isDark: true })),
-  on(HeaderComponentActions.white, (state) => ({ isDark: false }))
+  on(HeaderComponentActions.light, (state) => ({ isDark: false }))
 );

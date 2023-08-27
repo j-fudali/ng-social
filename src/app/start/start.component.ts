@@ -1,9 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignInComponent } from './components/sign-in/sign-in.component';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
+import { Store } from '@ngrx/store';
+import { LoginCredentials } from '../shared/interfaces/login/login-credentials';
+import { UserActions } from '../shared/store/user';
+import { SingUpCredentials } from '../shared/interfaces/sign-up/sing-up-credentials';
+import { Router, RouterModule } from '@angular/router';
+import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { SignUpComponent } from './pages/sign-up/sign-up.component';
 
 @Component({
   standalone: true,
@@ -13,11 +18,13 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
     FooterComponent,
     SignInComponent,
     SignUpComponent,
+    RouterModule,
   ],
   templateUrl: './start.component.html',
   styleUrls: ['./start.component.scss'],
 })
 export class StartComponent {
+  public router = inject(Router);
   features: { description: string; icon: string }[] = [
     {
       description: 'Chat with everyone who you want',

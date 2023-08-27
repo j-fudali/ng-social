@@ -1,0 +1,11 @@
+<label for="autoSaver" class="autoSaverSwitch relative inline-flex cursor-pointer select-none items-center">
+    <input type="checkbox" name="autoSaver" id="autoSaver" class="sr-only" [value]="checked" (input)="onChange($event)"
+        [disabled]="isDisabled">
+    <span class="slider mr-3 flex h-6 w-12 items-center rounded-full  p-1 duration-200"
+        [ngClass]="checked ? 'bg-tea-green' : 'bg-beige'">
+        <span class="dot h-4 w-4 rounded-full bg-white duration-200" [ngClass]="checked ? 'translate-x-6' : ''"></span>
+    </span>
+    <span class="label flex items-center text-sm font-medium text-black">
+        {{name}} <span class='pl-1'> {{checked ? 'On' : 'Off'}} <span *ngIf="isDisabled">(disabled)</span></span>
+    </span>
+</label>

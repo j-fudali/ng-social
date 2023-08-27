@@ -1,5 +1,7 @@
-<div class="min-h-screen w-full mx-auto " [ngClass]="(isDark$ | async) ? 'dark' : ''">
-    <app-header></app-header>
+<div class="min-h-screen w-full mx-auto " *ngIf="{isDark: isDark$ | async} as darkMode"
+    [ngClass]="darkMode.isDark ? 'dark' : ''">
+    <app-header (onLogout)="logout()" (onOpenSidenav)="openSidenav()" (onToggleTheme)="toggleTheme($event)"
+        [darkMode]="darkMode.isDark!"></app-header>
     <div class="flex flex-wrap md:flex-nowrap flex-row md:gap-5 py-3 dark:bg-slate-600">
         <app-side-nav class="md:hidden" *ngIf="isSidenavOpen$ | async">
             <app-nav></app-nav>
