@@ -8,7 +8,13 @@ import {
   FriendsListActions,
   isFriendsListOpen,
 } from '../shared/store/friends-list';
-import { trigger, transition, style, animate } from '@angular/animations';
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  state,
+} from '@angular/animations';
 import { FriendsListComponent } from './components/friends-list/friends-list.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
 import { HeaderComponent } from '../shared/components/header/header.component';
@@ -31,8 +37,16 @@ import { UserActions } from '../shared/store/user';
   styleUrls: ['./home.component.scss'],
   animations: [
     trigger('slide', [
-      transition(':enter', [
+      state(
+        'false',
         style({
+          display: 'none',
+        })
+      ),
+      state('true', style({ display: 'block' })),
+      transition('false=>true', [
+        style({
+          display: 'block',
           transform: 'translateX(100%)',
         }),
         animate(
@@ -43,11 +57,12 @@ import { UserActions } from '../shared/store/user';
         ),
       ]),
       transition(
-        ':leave',
+        'true=>false',
         animate(
           '200ms ease-in',
           style({
             transform: 'translateX(100%)',
+            opacity: 0,
           })
         )
       ),

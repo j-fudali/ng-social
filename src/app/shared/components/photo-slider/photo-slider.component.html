@@ -1,1 +1,15 @@
-<p>photo-slider works!</p>
+<div class="h-full w-full p-5 ">
+    <div class="flex flex-col md:flex-row gap-2 h-full">
+        <div
+            class="py-1 px-0 md:py-0 md:px-1 whitespace-nowrap md:whitespace-normal overflow-x-auto overflow-y-hidden md:overflow-x-hidden md:overflow-y-auto w-full md:w-1/4 h-1/4 md:h-full">
+            <div (click)="onSelect(image.url)" *ngFor="let image of sliderImages$ | async"
+                class="ml-1 md:ml-0 mb-0 md:mb-1 overflow-hidden rounded inline-block w-1/4 md:w-full h-full md:h-1/4 hover:border-2 hover:border-buff hover:cursor-pointer">
+                <img class="object-cover  hover:scale-125 w-full h-full transition-transform"
+                    [src]="publicUrl + image.url">
+            </div>
+        </div>
+        <div *ngIf="selectedImage" class="relative h-3/4 md:h-full w-full md:w-3/4 flex justify-center items-center">
+            <img class="object-contain" [ngSrc]="publicUrl + selectedImage" fill priority>
+        </div>
+    </div>
+</div>

@@ -15,6 +15,5 @@ import { SearchBarComponent } from 'src/app/shared/components/search-bar/search-
     NewPostFormComponent,
   ],
   templateUrl: './group.component.html',
-  styleUrls: ['./group.component.scss'],
 })
 export class GroupComponent {}

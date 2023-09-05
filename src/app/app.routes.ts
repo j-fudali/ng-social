@@ -7,5 +7,5 @@ export const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.routes'),
   },
-  { path: '', redirectTo: '/start', pathMatch: 'prefix' },
+  { path: '', redirectTo: 'start', pathMatch: 'full' },
 ];

@@ -1,12 +1,12 @@
 import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { catchError, map, of, throwError } from 'rxjs';
-import { UserService } from 'src/app/core/services/user.service';
 import { PublicUser } from '../interfaces/user/public-user';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { UsersService } from 'src/app/core/services/users.service';
 
 export function emailValidator(
-  userService: UserService,
+  userService: UsersService,
   toastr: ToastrService
 ): AsyncValidatorFn {
   return (control: AbstractControl) => {

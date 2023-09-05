@@ -15,8 +15,9 @@ import { LoginResponse } from '../../interfaces/login/login-response';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { Error } from '../../interfaces/error';
-import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SharedActions } from '../shared/shared.actions';
+import { ToastrService } from 'ngx-toastr';
 @Injectable()
 export class UserEffects {
   private actions$ = inject(Actions);
@@ -24,7 +25,6 @@ export class UserEffects {
   private cookiesService = inject(CookieService);
   private router = inject(Router);
   private toastr = inject(ToastrService);
-
   public login = createEffect(() => {
     return this.actions$.pipe(
       ofType(UserActions.logIn),
@@ -42,30 +42,26 @@ export class UserEffects {
     );
   });
 
-  public loginSuccess = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(UserActions.logInSuccess),
-        tap(({ loginResponse }) => {
-          this.cookiesService.set('token', loginResponse.access_token);
-          this.router.navigate(['/home']);
-        })
-      );
-    },
-    { dispatch: false }
-  );
-  logInAndSignUpFailure = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(UserActions.logInFailure, UserActions.registerFailure),
-        tap(({ error }) => {
-          const message = this.authService.getErrorMessage(error.statusCode);
-          this.toastr.error(message);
-        })
-      );
-    },
-    { dispatch: false }
-  );
+  public loginSuccess = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(UserActions.logInSuccess),
+      tap(({ loginResponse }) => {
+        this.cookiesService.set('token', loginResponse.access_token);
+        this.router.navigate(['/home']);
+      }),
+      map(() => SharedActions.hideSpinner())
+    );
+  });
+  logInAndSignUpFailure = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(UserActions.logInFailure, UserActions.registerFailure),
+      tap(({ error }) => {
+        const message = this.authService.getErrorMessage(error.statusCode);
+        this.toastr.error(message);
+      }),
+      map(() => SharedActions.hideSpinner())
+    );
+  });
   register = createEffect(
     (actions$ = inject(Actions), authService = inject(AuthService)) => {
       return actions$.pipe(

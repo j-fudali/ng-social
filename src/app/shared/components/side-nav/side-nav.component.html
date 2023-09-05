@@ -1,5 +1,5 @@
 <div class="fixed top-0 left-0 w-full h-screen z-50 bg-black md:bg-transparent bg-opacity-40 flex">
-    <div @slide *ngIf="isOpen" class="px-5 pt-5 w-1/2 h-full shadow bg-beige flex flex-col gap-5">
+    <div [@slide]="isOpen" class="px-5 pt-5 w-1/2 h-full shadow bg-beige flex flex-col gap-5">
         <button (click)="closeNav()" class="block md:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
@@ -10,5 +10,5 @@
         </button>
         <ng-content></ng-content>
     </div>
-    <div (click)="closeNav()" class="w-1/4 h-full bg-transparent"></div>
+    <div (click)="closeNav()" class="w-1/2 h-full bg-transparent"></div>
 </div>

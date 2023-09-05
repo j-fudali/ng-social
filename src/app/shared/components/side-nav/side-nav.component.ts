@@ -7,7 +7,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { animate, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { NavComponentActions } from '../../store/nav';
 
 @Component({
@@ -18,8 +24,21 @@ import { NavComponentActions } from '../../store/nav';
   styleUrls: ['./side-nav.component.scss'],
   animations: [
     trigger('slide', [
-      transition(':enter', [
+      state(
+        'false',
         style({
+          display: 'none',
+        })
+      ),
+      state(
+        'true',
+        style({
+          display: 'flex',
+        })
+      ),
+      transition('false=>true', [
+        style({
+          display: 'flex',
           transform: 'translateX(-100%)',
         }),
         animate(
@@ -29,7 +48,7 @@ import { NavComponentActions } from '../../store/nav';
           })
         ),
       ]),
-      transition(':leave', [
+      transition('true=>false', [
         style({
           transform: 'translateX(0)',
         }),
@@ -37,6 +56,7 @@ import { NavComponentActions } from '../../store/nav';
           '200ms ease-in',
           style({
             transform: 'translateX(-100%)',
+            opacity: 0,
           })
         ),
       ]),
@@ -51,6 +71,6 @@ export class SideNavComponent implements OnInit {
     setTimeout(() => this.store.dispatch(NavComponentActions.close()), 150);
   }
   ngOnInit(): void {
-    this.isOpen = true;
+    setTimeout(() => (this.isOpen = true), 150);
   }
 }

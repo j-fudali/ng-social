@@ -23,7 +23,6 @@ export class AuthService {
       credentials
     );
   }
-
   getErrorMessage(errorCode: number) {
     switch (errorCode) {
       case 401:

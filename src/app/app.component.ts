@@ -3,7 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 import { Store } from '@ngrx/store';
-import { isLoading } from './shared/store/user';
+import { showSpinner } from './shared/store/shared/shared.selectors';
 
 @Component({
   selector: 'app-root',
@@ -14,5 +14,5 @@ import { isLoading } from './shared/store/user';
 })
 export class AppComponent {
   private store = inject(Store);
-  loadingSpinner$ = this.store.select(isLoading);
+  loadingSpinner$ = this.store.select(showSpinner);
 }

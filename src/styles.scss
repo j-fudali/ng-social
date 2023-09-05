@@ -4,6 +4,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-gray-200 rounded-full;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-tea-green rounded-full;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-buff;
+}
 @font-face {
   font-family: "Abel";
   src: local("Oxygen"), url(./assets/fonts/Abel-Regular.ttf) format("truetype");
@@ -17,17 +37,20 @@
   input {
     @apply p-1 border-2 border-buff rounded focus:border-tea-green outline-none transition;
   }
+  .link {
+    @apply hover:text-tea-green;
+  }
   .info-link {
     @apply flex gap-1 p-4 rounded-full shadow bg-beige text-base w-auto;
   }
   .btn-primary {
-    @apply flex items-center gap-1 p-2 rounded-lg shadow text-sm md:text-lg bg-tea-green hover:bg-buff hover:text-white transition;
+    @apply flex items-center gap-1 p-2 rounded-lg shadow text-sm md:text-lg bg-tea-green hover:bg-buff hover:text-white transition dark:bg-slate-800 dark:hover:bg-slate-900 dark:text-white;
   }
   .btn-outline {
-    @apply flex items-center gap-1 p-1 rounded-lg shadow text-sm md:text-lg border-2 border-tea-green hover:text-buff hover:border-buff transition;
+    @apply flex items-center gap-1 p-1 rounded-lg shadow text-sm md:text-lg  border-2 border-tea-green hover:border-buff transition dark:border-white dark:hover:border-slate-900;
   }
   .btn-icon {
-    @apply hover:text-buff transition-colors;
+    @apply hover:text-buff transition rounded-full;
   }
   .btn-arrow {
     @apply p-2 hover:scale-125 hover:bg-buff hover:text-white transition  bg-tea-green shadow-lg rounded-full;
@@ -36,7 +59,7 @@
     @apply text-red-700;
   }
   .tag {
-    @apply p-1 border rounded-full shadow bg-cornsilk text-sm md:text-base;
+    @apply p-1 border rounded-full shadow bg-cornsilk text-sm md:text-base dark:text-black;
   }
   .thumbnail {
     @apply rounded-full shadow overflow-hidden w-10 h-10;

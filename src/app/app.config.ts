@@ -16,6 +16,11 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { CookieService } from 'ngx-cookie-service';
 import { provideToastr } from 'ngx-toastr';
 import { UserEffects, userReducer } from './shared/store/user';
+import { PostsEffects } from './shared/store/posts/posts.effects';
+import { sharedReducer } from './shared/store/shared/shared.reducer';
+import { postsReducer } from './shared/store/posts/posts.reducer';
+import { commentsReducer } from './shared/store/comments';
+import { CommentsEffects } from './shared/store/comments/comments.effects';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -27,8 +32,11 @@ export const appConfig: ApplicationConfig = {
     provideState({ name: 'header', reducer: headerComponentReducer }),
     provideState({ name: 'friendsList', reducer: friendsListReducer }),
     provideState({ name: 'user', reducer: userReducer }),
+    provideState({ name: 'posts', reducer: postsReducer }),
+    provideState({ name: 'shared', reducer: sharedReducer }),
+    provideState({ name: 'comments', reducer: commentsReducer }),
     provideAnimations(),
-    provideEffects(UserEffects),
+    provideEffects(UserEffects, PostsEffects, CommentsEffects),
     provideHttpClient(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     importProvidersFrom(CookieService),

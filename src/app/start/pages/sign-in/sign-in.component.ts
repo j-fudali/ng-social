@@ -23,6 +23,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { LoginResponse } from 'src/app/shared/interfaces/login/login-response';
 import { Store } from '@ngrx/store';
 import { UserActions } from 'src/app/shared/store/user';
+import { SharedActions } from 'src/app/shared/store/shared/shared.actions';
 
 @Component({
   selector: 'app-sign-in',
@@ -55,6 +56,7 @@ export class SignInComponent implements OnInit {
   submit() {
     if (this.loginForm.valid && this.loginForm.dirty) {
       const credentials: LoginCredentials = this.loginForm.value;
+      this.store.dispatch(SharedActions.showSpinner());
       this.store.dispatch(UserActions.logIn({ credentials }));
     }
   }

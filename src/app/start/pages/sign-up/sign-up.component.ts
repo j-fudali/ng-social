@@ -10,12 +10,13 @@ import { ToggleButtonComponent } from 'src/app/shared/components/toggle-button/t
 import { SingUpCredentials } from 'src/app/shared/interfaces/sign-up/sing-up-credentials';
 import { FormErrorComponent } from 'src/app/shared/components/form-error/form-error.component';
 import { usernameValidator } from 'src/app/shared/validators/username.validator';
-import { UserService } from 'src/app/core/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { emailValidator } from 'src/app/shared/validators/email.validator';
 import { passwordRepeat } from 'src/app/shared/validators/password-repeat.validator';
 import { UserActions } from 'src/app/shared/store/user';
 import { Store } from '@ngrx/store';
+import { UsersService } from 'src/app/core/services/users.service';
+import { SharedActions } from 'src/app/shared/store/shared/shared.actions';
 
 @Component({
   selector: 'app-sign-up',
@@ -32,7 +33,7 @@ import { Store } from '@ngrx/store';
 export class SignUpComponent implements OnInit {
   private store = inject(Store);
   private fb = inject(FormBuilder);
-  private userService = inject(UserService);
+  private userService = inject(UsersService);
   private toastr = inject(ToastrService);
   signUpForm: FormGroup;
   maxDatepickerValue = new Date(new Date().setDate(new Date().getDate() - 1))
@@ -118,15 +119,12 @@ export class SignUpComponent implements OnInit {
         username: this.username?.value,
         firstname: this.firstname?.value,
         lastname: this.lastname?.value,
-        birthdate: new DatePipe('en-US').transform(
-          this.birthdate?.value,
-          'dd.MM.yyyy'
-        )!,
+        birthdate: this.birthdate?.value,
         phone: this.phone?.value,
         password: this.password?.value,
         isVisible: this.visibility?.value,
       };
-      console.log(credentials);
+      this.store.dispatch(SharedActions.showSpinner());
       this.store.dispatch(UserActions.register({ credentials }));
     }
   }

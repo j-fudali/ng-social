@@ -35,6 +35,7 @@ export class ToggleButtonComponent implements ControlValueAccessor {
   writeValue(value: boolean) {
     this.checked = value;
   }
+
   onChange(event: Event): void {
     const checked: boolean = (<HTMLInputElement>event.target).checked;
     this.checked = checked;

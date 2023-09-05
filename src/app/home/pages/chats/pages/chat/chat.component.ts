@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewMessageComponent } from './components/new-message/new-message.component';
+import { NewMessageComponent } from '../../../../../shared/components/new-message/new-message.component';
 
 @Component({
   standalone: true,
