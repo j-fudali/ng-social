@@ -1,7 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { PostsState } from './posts.reducer';
 import { AppState } from '../app.state';
-import { state } from '@angular/animations';
 export const selectPostsState = (state: AppState) => state.posts;
 export const posts = createSelector(
   selectPostsState,

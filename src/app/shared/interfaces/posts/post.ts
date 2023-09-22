@@ -1,4 +1,4 @@
-import { ReactionsNumber } from '../reactions-number';
+import { Reaction } from '../reactions/reactions';
 
 export interface Post {
   _id: string;
@@ -11,7 +11,7 @@ export interface Post {
     lastname: string;
   };
   categories: string[];
-  reactionsNumber: ReactionsNumber;
+  reactions: Reaction[];
   files: {
     url: string;
   }[];

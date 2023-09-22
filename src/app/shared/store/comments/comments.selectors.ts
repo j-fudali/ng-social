@@ -7,7 +7,3 @@ export const comments = createSelector(
   selectCommentsState,
   (state: CommentsState) => state.comments
 );
-export const showCommentsComponent = createSelector(
-  selectCommentsState,
-  (state) => state.showCommentsComponent
-);

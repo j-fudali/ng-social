@@ -1,15 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { ModalComponent } from '../modal/modal.component';
 import { environment } from 'src/environments/environment.development';
 import { Store } from '@ngrx/store';
 import { sliderImages } from '../../store/posts';
 import { tap } from 'rxjs';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-photo-slider',
@@ -21,12 +16,14 @@ import { tap } from 'rxjs';
 })
 export class PhotoSliderComponent {
   private store = inject(Store);
-  sliderImages$ = this.store
-    .select(sliderImages)
-    .pipe(tap((v) => console.log(v)));
+  private dialogRef = inject(DialogRef);
+  sliderImages$ = this.store.select(sliderImages);
   publicUrl = environment.url + '/';
   selectedImage: string;
   onSelect(image: string) {
     this.selectedImage = image;
+  }
+  close() {
+    this.dialogRef.close();
   }
 }

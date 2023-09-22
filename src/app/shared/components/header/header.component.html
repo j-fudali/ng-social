@@ -1,5 +1,5 @@
-<header class="px-3 py-2 w-full flex flex-col gap-2 bg-cornsilk dark:bg-slate-700 dark:text-white">
-    <div class="flex justify-between items-center">
+<header class="px-3 py-2 w-full flex flex-col gap-2  shadow bg-white dark:bg-slate-700 dark:text-white">
+    <div class="flex items-center justify-between gap-2">
         <div class="flex gap-2 items-center">
             <button (click)="openNav()" class="block md:hidden w-10 h-10 ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -8,23 +8,14 @@
                         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
-
-            <h1 class="hover:text-buff text-center whitespace-nowrap font-bold uppercase text-3xl md:text-5xl">
-                <a routerLink="/home">Ng-social</a>
+            <h1 class="text-center whitespace-nowrap uppercase text-4xl md:text-5xl font-light">
+                <a routerLink="/home"><span class="text-green-blue">Ng</span><span
+                        class="text-mikado-yellow">S</span></a>
             </h1>
-            <app-nav class="hidden md:block ml-5"></app-nav>
         </div>
-        <div class="flex gap-2">
-            <app-toggle-dark-mode-button (onToggleTheme)="toggleTheme($event)" [darkMode]="
-                darkMode"></app-toggle-dark-mode-button>
-            <button (click)="logout()" class="btn-outline">
-                <span>Log-out</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                </svg>
-            </button>
-        </div>
+        <app-search-bar class="w-3/4"></app-search-bar>
+        <app-toggle-dark-mode-button [darkMode]="darkMode"
+            (onToggleTheme)="toggleTheme($event)"></app-toggle-dark-mode-button>
+
     </div>
 </header>

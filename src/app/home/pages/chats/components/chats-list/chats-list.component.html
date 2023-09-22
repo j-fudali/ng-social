@@ -1,6 +1,6 @@
-<ul class="h-full flex flex-col bg-white dark:bg-slate-700 border border-tea-green rounded shadow overflow-y-auto">
+<ul class="h-full flex flex-col bg-white dark:bg-slate-700 border border-green-blue rounded shadow overflow-y-auto">
     <li [routerLink]="[chat._id]" *ngFor="let chat of chats" (click)="hideChatsList()"
-        class="border-b p-2 flex flex-col  hover:bg-tea-green hover:cursor-pointer transition-colors dark:bg-slate-700 dark:hover:bg-buff">
+        class="border-b p-2 flex flex-col  hover:bg-green-blue hover:cursor-pointer transition-colors dark:bg-slate-700 dark:hover:bg-green-blue">
         <h3 class="w-full text-base md:text-lg font-bold">{{chat.name}}</h3>
         <!-- Participants -->
         <!-- <ul>

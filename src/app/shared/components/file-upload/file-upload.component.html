@@ -1,0 +1,5 @@
+<div class="p-2 flex justify-end items-center gap-2 w-full rounded border-2 border-green-blue">
+    <span *ngIf="files && files.length > 0">Selected files: {{files.length}}</span>
+    <button type="button" class="btn-primary" (click)="filesRef.click()">Upload</button>
+</div>
+<input class="hidden" (change)="onChange($event)" #filesRef type="file" multiple>

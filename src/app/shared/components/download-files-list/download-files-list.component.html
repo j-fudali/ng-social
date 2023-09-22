@@ -1,0 +1,5 @@
+<ul class="list-none flex flex-col gap-2 bg-white p-2 rounded">
+    <li *ngFor="let f of data.files; trackBy: trackBy; let i = index">
+        <a class="link" [href]="publicUrl + '/' + f.url" download>{{i + 1}}. {{f.url | filenameTrim}}</a>
+    </li>
+</ul>

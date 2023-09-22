@@ -25,13 +25,30 @@ export class PostsListComponent {
   @Output() onOpenComments = new EventEmitter<string>();
   @Output() onOpenImageSlider = new EventEmitter<{ url: string }[]>();
   @Output() onPostListScroll = new EventEmitter<void>();
+  @Output() onReactionAdd = new EventEmitter<{
+    postId: string;
+    reaction: string;
+  }>();
+  @Output() onReactionChange = new EventEmitter<{
+    postId: string;
+    reaction: string;
+  }>();
   openComments(postId: string) {
     this.onOpenComments.emit(postId);
   }
   openImageSlider(images: { url: string }[]) {
     this.onOpenImageSlider.emit(images);
   }
+  addReaction(event: { postId: string; reaction: string }) {
+    this.onReactionAdd.emit(event);
+  }
+  changeReaction(event: { postId: string; reaction: string }) {
+    this.onReactionChange.emit(event);
+  }
   onScroll() {
     this.onPostListScroll.emit();
+  }
+  trackBy(index: number, post: Post): string {
+    return post._id;
   }
 }

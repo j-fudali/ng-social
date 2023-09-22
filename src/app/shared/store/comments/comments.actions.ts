@@ -8,6 +8,5 @@ export const CommentsAction = createActionGroup({
     Load: props<{ postId: string }>(),
     'Load Success': props<{ comments: Comment[] }>(),
     'Load Failure': props<{ error: Error }>(),
-    'Component Close': emptyProps(),
   },
 });

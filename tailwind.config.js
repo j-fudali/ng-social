@@ -9,16 +9,16 @@ module.exports = {
       },
       backgroundImage: {
         people:
-          "linear-gradient(to left, rgb(204, 213, 174, 0.7), rgb(212, 163, 115, 0.7)), url('src/assets/people.jpg')",
+          "linear-gradient(to left, rgb(157, 209, 236, 0.7), rgb(61, 165, 217, 0.7)), url('src/assets/people.jpg')",
         "people-2":
-          "linear-gradient(to left, rgb(204, 213, 174, 0.7), rgb(212, 163, 115, 0.7)), url('src/assets/people2.jpg')",
+          "linear-gradient(to left, rgb(157, 209, 236, 0.7), rgb(61, 165, 217, 0.7)), url('src/assets/people2.jpg')",
       },
       colors: {
-        "tea-green": "#CCD5AE",
-        beige: "#E9EDC9",
-        cornsilk: "#FEFAE0",
-        "papaya-whip": "#FAEDCD",
-        buff: "#D4A373",
+        "green-blue": "#2364AA",
+        "picton-blue": "#3DA5D9",
+        "baby-blue": "#9DD1EC",
+        verdigris: "#73BFB8",
+        "mikado-yellow": "#FEC601",
       },
     },
   },

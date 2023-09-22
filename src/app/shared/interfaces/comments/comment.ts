@@ -1,11 +1,10 @@
-import { ReactionsNumber } from '../reactions-number';
+import { Reaction } from '../reactions/reactions';
 import { PublicUser } from '../user/public-user';
-import { Post } from '../posts/post';
 
 export interface Comment {
   _id: string;
   text: string;
   author: PublicUser;
-  reactionsNumber: ReactionsNumber;
+  reactions: Reaction[];
   image: string;
 }

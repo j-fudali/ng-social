@@ -18,9 +18,11 @@ import {
 import { FriendsListComponent } from './components/friends-list/friends-list.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
 import { HeaderComponent } from '../shared/components/header/header.component';
-import { NavComponent } from '../shared/components/nav/nav.component';
+import { NavComponent } from '../shared/components/side-nav/components/nav/nav.component';
 import { SideNavComponent } from '../shared/components/side-nav/side-nav.component';
 import { UserActions } from '../shared/store/user';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { map, tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -71,8 +73,11 @@ import { UserActions } from '../shared/store/user';
 })
 export class HomeComponent implements OnInit {
   private store = inject(Store);
-  opened: boolean = false;
+  private breakpoints = inject(BreakpointObserver);
   isSidenavOpen$ = this.store.select(isOpen);
+  isGtMd$ = this.breakpoints
+    .observe(['(min-width: 768px)'])
+    .pipe(map((v) => v.matches));
   isDark$ = this.store.select(isDark);
   isFriendsListOpen$ = this.store.select(isFriendsListOpen);
   ngOnInit(): void {
@@ -82,9 +87,7 @@ export class HomeComponent implements OnInit {
         : HeaderComponentActions.light()
     );
   }
-  toggle() {
-    this.opened = !this.opened;
-  }
+
   openFriendsList() {
     this.store.dispatch(FriendsListActions.open());
   }
@@ -94,10 +97,10 @@ export class HomeComponent implements OnInit {
   openSidenav() {
     this.store.dispatch(NavComponentActions.open());
   }
-  toggleTheme(darkMode: boolean) {
+  toggleTheme(isDark: boolean) {
     this.store.dispatch(
-      darkMode ? HeaderComponentActions.dark() : HeaderComponentActions.light()
+      isDark ? HeaderComponentActions.dark() : HeaderComponentActions.light()
     );
-    localStorage.setItem('darkMode', darkMode ? 'true' : 'false');
+    localStorage.setItem('darkMode', isDark ? 'true' : 'false');
   }
 }

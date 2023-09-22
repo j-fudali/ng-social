@@ -1,29 +1,15 @@
 import {
-  AfterContentInit,
-  AfterViewChecked,
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
-  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import {
-  animate,
-  query,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import { NavComponent } from '../nav/nav.component';
-import { Store } from '@ngrx/store';
-import { HeaderComponentActions } from '../../store/header';
-import { ToggleDarkModeButtonComponent } from './components/toggle-dark-mode-button/toggle-dark-mode-button.component';
+import { NavComponent } from '../side-nav/components/nav/nav.component';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { ToggleDarkModeButtonComponent } from '../toggle-dark-mode-button/toggle-dark-mode-button.component';
 
 @Component({
   selector: 'app-header',
@@ -32,6 +18,7 @@ import { ToggleDarkModeButtonComponent } from './components/toggle-dark-mode-but
     CommonModule,
     RouterModule,
     NavComponent,
+    SearchBarComponent,
     ToggleDarkModeButtonComponent,
   ],
   templateUrl: './header.component.html',
@@ -39,18 +26,14 @@ import { ToggleDarkModeButtonComponent } from './components/toggle-dark-mode-but
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  @Output() onLogout = new EventEmitter<void>();
+  @Input({ required: true }) darkMode: boolean;
   @Output() onOpenSidenav = new EventEmitter<void>();
   @Output() onToggleTheme = new EventEmitter<boolean>();
-  @Input() darkMode: boolean = false;
 
-  toggleTheme(darkMode: boolean) {
-    this.onToggleTheme.emit(!this.darkMode);
+  toggleTheme(isDark: boolean) {
+    this.onToggleTheme.emit(isDark);
   }
   openNav() {
     this.onOpenSidenav.emit();
-  }
-  logout() {
-    this.onLogout.emit();
   }
 }

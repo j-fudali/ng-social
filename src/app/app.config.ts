@@ -21,8 +21,11 @@ import { sharedReducer } from './shared/store/shared/shared.reducer';
 import { postsReducer } from './shared/store/posts/posts.reducer';
 import { commentsReducer } from './shared/store/comments';
 import { CommentsEffects } from './shared/store/comments/comments.effects';
+import { ReactionsEffects } from './shared/store/reactions/reactions.effects';
+import { SharedEffects } from './shared/store/shared/shared.effects';
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideAnimations(),
     provideRouter(routes),
     provideToastr({
       preventDuplicates: true,
@@ -35,8 +38,13 @@ export const appConfig: ApplicationConfig = {
     provideState({ name: 'posts', reducer: postsReducer }),
     provideState({ name: 'shared', reducer: sharedReducer }),
     provideState({ name: 'comments', reducer: commentsReducer }),
-    provideAnimations(),
-    provideEffects(UserEffects, PostsEffects, CommentsEffects),
+    provideEffects(
+      UserEffects,
+      PostsEffects,
+      CommentsEffects,
+      ReactionsEffects,
+      SharedEffects
+    ),
     provideHttpClient(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     importProvidersFrom(CookieService),

@@ -22,9 +22,9 @@ import { ToastrService } from 'ngx-toastr';
 export class UserEffects {
   private actions$ = inject(Actions);
   private authService = inject(AuthService);
+  private toastr = inject(ToastrService);
   private cookiesService = inject(CookieService);
   private router = inject(Router);
-  private toastr = inject(ToastrService);
   public login = createEffect(() => {
     return this.actions$.pipe(
       ofType(UserActions.logIn),
@@ -46,22 +46,14 @@ export class UserEffects {
     return this.actions$.pipe(
       ofType(UserActions.logInSuccess),
       tap(({ loginResponse }) => {
-        this.cookiesService.set('token', loginResponse.access_token);
+        this.cookiesService.set('token', loginResponse.accessToken);
+        this.cookiesService.set('userId', loginResponse.userId);
         this.router.navigate(['/home']);
       }),
       map(() => SharedActions.hideSpinner())
     );
   });
-  logInAndSignUpFailure = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(UserActions.logInFailure, UserActions.registerFailure),
-      tap(({ error }) => {
-        const message = this.authService.getErrorMessage(error.statusCode);
-        this.toastr.error(message);
-      }),
-      map(() => SharedActions.hideSpinner())
-    );
-  });
+
   register = createEffect(
     (actions$ = inject(Actions), authService = inject(AuthService)) => {
       return actions$.pipe(
@@ -85,7 +77,12 @@ export class UserEffects {
       return this.actions$.pipe(
         ofType(UserActions.registerSuccess),
         tap(({ signUpResponse }) => {
-          this.cookiesService.set('token', signUpResponse.access_token);
+          this.cookiesService.set(
+            'token',
+            signUpResponse.access_token,
+            undefined,
+            '/'
+          );
           this.router.navigate(['/home']);
           this.toastr.success(signUpResponse.message);
         })
@@ -98,7 +95,7 @@ export class UserEffects {
       return this.actions$.pipe(
         ofType(UserActions.logOut),
         tap(() => {
-          this.cookiesService.delete('token');
+          this.cookiesService.delete('token', '/', 'localhost');
           this.router.navigate(['/start']);
         })
       );

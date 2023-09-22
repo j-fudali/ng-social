@@ -1,6 +1,12 @@
-<div class="fixed top-0 left-0 w-full h-screen z-50 bg-black md:bg-transparent bg-opacity-40 flex">
-    <div [@slide]="isOpen" class="px-5 pt-5 w-1/2 h-full shadow bg-beige flex flex-col gap-5">
-        <button (click)="closeNav()" class="block md:hidden">
+<ng-template #sidenavContent>
+    <app-nav (onLogout)="logout()" (onCloseSidenav)="closeSidenav()" class="w-full"></app-nav>
+</ng-template>
+
+<div *ngIf="!(isGtMd$ | async); else onGtMd"
+    class="fixed top-0 left-0 w-full h-screen  z-50 bg-black bg-opacity-40 flex">
+    <div [@slide]="isOpen"
+        class="w-1/2 md:w-full h-full p-2 flex flex-col gap-5 shadow bg-white dark:bg-slate-700 dark:text-white">
+        <button (click)="closeSidenav()" class="block md:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -8,7 +14,13 @@
             </svg>
 
         </button>
-        <ng-content></ng-content>
+        <ng-container *ngTemplateOutlet="sidenavContent"></ng-container>
     </div>
-    <div (click)="closeNav()" class="w-1/2 h-full bg-transparent"></div>
+
+    <div (click)="closeSidenav()" class="w-1/2 h-full bg-transparent"></div>
 </div>
+<ng-template #onGtMd>
+    <div class="fixed top-0 left-0 w-1/6 h-screen z-50 bg-white dark:bg-slate-700 dark:text-white shadow p-2">
+        <ng-container *ngTemplateOutlet="sidenavContent"></ng-container>
+    </div>
+</ng-template>

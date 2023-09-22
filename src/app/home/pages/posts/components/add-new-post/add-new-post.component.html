@@ -1,3 +1,42 @@
-<form [formGroup]="newPostForm">
-
+<h1 class="text-center text-xl font-bold">Add new post</h1>
+<form class="flex flex-col gap-2" [formGroup]="newPostForm" (ngSubmit)="submit()">
+    <div class="flex items-end gap-2">
+        <app-form-control class="w-1/2">
+            <label for="title" label>Title</label>
+            <input formControlName="title" id="title" type="text" input>
+        </app-form-control>
+        <app-toggle-button formControlName="visibility" name="Is it public?"></app-toggle-button>
+    </div>
+    <app-form-control>
+        <label for="text" label>Text</label>
+        <textarea id="text" formControlName="text" class="p-1 resize-none" rows="5" input
+            placeholder="The essence of your post..."></textarea>
+    </app-form-control>
+    <app-form-control class="relative">
+        <label for="categories" label>Categories</label>
+        <input maxlength="25" formControlName="newCategory" type="text" id="categories" input>
+        <button type="button" (click)="addCategory()" class="btn-icon absolute top-1/2 right-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                <path
+                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+            </svg>
+        </button>
+    </app-form-control>
+    <ul class="flex flex-wrap gap-1">
+        <li *ngFor="let c of categories?.value; let i = index" class="tag relative flex gap-1 items-center">{{c}}
+            <button (click)="removeCategory(i)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                </svg>
+            </button>
+        </li>
+    </ul>
+    <app-form-control>
+        <app-file-upload formControlName="files" input></app-file-upload>
+    </app-form-control>
+    <div class="self-end flex gap-1">
+        <button class="btn-outline" type="submit">Add post</button>
+        <button type="button" class="btn-primary" (click)="close()">Close</button>
+    </div>
 </form>

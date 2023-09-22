@@ -4,36 +4,41 @@
             <img loading="lazy" class="object-cover w-full h-full" src="../../../../assets/people2.jpg" alt="">
         </div>
         <div class="flex flex-col text-right">
-            <a href="#" class="text-lg hover:text-buff   transition-colors">{{post.author.username}}</a>
+            <a href="#" class="text-lg hover:text-green-blue   transition-colors">{{post.author.username}}</a>
             <span>{{post.author.firstname + ' ' + post.author.lastname}}</span>
         </div>
     </div>
-    <div *ngIf="post.files.length > 0" (click)="openImagesSlider()"
-        class="relative hover:cursor-pointer overflow-hidden flex h-[35vh]">
-        <img class="object-cover" *ngIf="post.files[0]" [ngSrc]="publicUrl + post.files[0].url" fill priority>
-        <div
-            class="absolute bottom-1 right-1  h-6 w-6 rounded-full p-1 flex justify-center items-center bg-buff text-black">
-            <span class="text-white">
-                +{{post.files.length-1}}
-            </span>
+    <ng-container *ngIf="post.files | filesFilter:'images' as images">
+        <div *ngIf="images.length > 0" (click)="openImagesSlider()"
+            class="relative hover:cursor-pointer overflow-hidden flex h-[35vh]">
+            <img class="object-cover" *ngIf="images[0]" [ngSrc]="publicUrl + images[0].url" fill priority>
+            <div
+                class="absolute bottom-1 right-1  h-6 w-6 rounded-full p-1 flex justify-center items-center bg-green-blue text-black">
+                <span class="text-white">
+                    +{{images.length-1}}
+                </span>
+            </div>
         </div>
-    </div>
+    </ng-container>
     <div class="p-1 flex flex-col">
         <div class="flex justify-between items-center">
             <h3 class="text-xl">{{post.title}}</h3>
-            <div class="flex gap-1">
+            <div *ngIf="post.categories.length > 0" class="flex gap-1">
                 <div class="tag" *ngFor="let category of post.categories">{{category}}</div>
             </div>
         </div>
         <div>
             <span>{{post.text | slice:0:250}}</span>
             <span *ngIf="post.text.length > 250 && readMore">{{post.text | slice:250}}</span>
-            <div *ngIf="post.text.length > 250" class="hover:text-buff hover:cursor-pointer transition-colors"
+            <div *ngIf="post.text.length > 250" class="hover:text-green-blue hover:cursor-pointer transition-colors"
                 (click)="toggleReadMore()">{{readMore ? 'Read less' : 'Read more'}}</div>
         </div>
         <small class="self-end">{{post.createdAt | date:'dd.MM.yyyy hh:mm'}}</small>
     </div>
     <hr>
-    <app-bottom-panel [likesNumber]="post.reactionsNumber.likesNumber"
-        [dislikesNumber]="post.reactionsNumber.dislikesNumber" (onCommentsOpen)="openComments()"></app-bottom-panel>
+    <app-bottom-panel [filesNumber]="(post.files | filesFilter:'files').length"
+        [likesNumber]="(post.reactions | reaction:'like').length"
+        [dislikesNumber]="(post.reactions | reaction:'dislikes').length" [lastReaction]="lastReaction"
+        (onOpenDownloadFiles)="openDownloadFiles(post.files)" (onCommentsOpen)="openComments()"
+        (onReaction)="react($event)"></app-bottom-panel>
 </div>

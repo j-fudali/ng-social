@@ -9,12 +9,14 @@ import {
 import { CommonModule } from '@angular/common';
 import { CommentComponent } from './components/comment/comment.component';
 import { NewMessageComponent } from '../new-message/new-message.component';
-import { ModalComponent } from '../modal/modal.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { Store } from '@ngrx/store';
 import { comments } from '../../store/comments';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { LoaderComponent } from '../loader/loader.component';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { Comment } from '../../interfaces/comments/comment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-comments',
@@ -23,7 +25,6 @@ import { LoaderComponent } from '../loader/loader.component';
     CommonModule,
     CommentComponent,
     NewMessageComponent,
-    ModalComponent,
     LayoutModule,
     LoaderComponent,
   ],
@@ -31,10 +32,9 @@ import { LoaderComponent } from '../loader/loader.component';
   styleUrls: ['./comments.component.scss'],
 })
 export class CommentsComponent {
-  private store = inject(Store);
-  comments$ = this.store.select(comments);
-  @Output() onCloseComments = new EventEmitter<void>();
-  closeComments() {
-    this.onCloseComments.emit();
+  public data: { comments: Observable<Comment[] | null> } = inject(DIALOG_DATA);
+  private dialogRef = inject(DialogRef<CommentsComponent>);
+  close() {
+    this.dialogRef.close();
   }
 }

@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { LoginCredentials } from 'src/app/shared/interfaces/login/login-credentials';
 import { LoginResponse } from 'src/app/shared/interfaces/login/login-response';
@@ -13,7 +14,7 @@ import { environment } from 'src/environments/environment.development';
 export class AuthService {
   private http = inject(HttpClient);
   private baseUrl = environment.url + '/auth';
-
+  private cookies = inject(CookieService);
   login(credentials: LoginCredentials): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.baseUrl + '/login', credentials);
   }
@@ -32,5 +33,9 @@ export class AuthService {
       default:
         return 'Unknow error. Please try again later.';
     }
+  }
+  getHeaders() {
+    const token = this.cookies.get('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
   }
 }

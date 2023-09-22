@@ -1,13 +1,14 @@
 <div class="flex justify-center gap-2 pb-2">
-    <app-comments (onCloseComments)="closeComments()" @slide *ngIf="showCommentsComponent$ | async"
-        class="hidden md:block w-[40%] h-[85vh]"></app-comments>
     <ng-container *ngIf="posts$ | async as posts; else loading">
-        <app-posts-list (onPostListScroll)="onPostsScroll(posts.count)" (onOpenImageSlider)="openImagesSlider($event)"
+        <app-posts-list (onReactionAdd)="reactionAdd($event)" (onReactionChange)="reactionChange($event)"
+            (onPostListScroll)="onPostsScroll(posts.count)" (onOpenImageSlider)="openImagesSlider($event)"
             (onOpenComments)="openComments($event)" [posts]="posts.result"
-            class="w-full md:w-[60%] h-[85vh]"></app-posts-list>
+            class="w-full md:w-3/5 h-screen"></app-posts-list>
     </ng-container>
     <ng-template #loading>
-        <app-loader class="h-[85vh]"></app-loader>
+        <app-loader class="h-screen"></app-loader>
     </ng-template>
 </div>
-<app-add-new-post-button></app-add-new-post-button>
+<button (click)="openNewPostDialog()" class="fixed bottom-4 right-2 p-2 btn-outline text-center justify-center">
+    New post
+</button>

@@ -1,15 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControlComponent } from 'src/app/shared/components/form-control/form-control.component';
 import { FormErrorComponent } from 'src/app/shared/components/form-error/form-error.component';
-import { AuthService } from 'src/app/core/services/auth.service';
 import {
   FormBuilder,
   FormGroup,
@@ -17,10 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { LoginCredentials } from 'src/app/shared/interfaces/login/login-credentials';
-import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
-import { LoginResponse } from 'src/app/shared/interfaces/login/login-response';
 import { Store } from '@ngrx/store';
 import { UserActions } from 'src/app/shared/store/user';
 import { SharedActions } from 'src/app/shared/store/shared/shared.actions';

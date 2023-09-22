@@ -1,9 +1,15 @@
+<button class="absolute top-2 right-2" (click)="close()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+        <path
+            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+    </svg>
+</button>
 <div class="h-full w-full p-5 ">
     <div class="flex flex-col md:flex-row gap-2 h-full">
         <div
             class="py-1 px-0 md:py-0 md:px-1 whitespace-nowrap md:whitespace-normal overflow-x-auto overflow-y-hidden md:overflow-x-hidden md:overflow-y-auto w-full md:w-1/4 h-1/4 md:h-full">
             <div (click)="onSelect(image.url)" *ngFor="let image of sliderImages$ | async"
-                class="ml-1 md:ml-0 mb-0 md:mb-1 overflow-hidden rounded inline-block w-1/4 md:w-full h-full md:h-1/4 hover:border-2 hover:border-buff hover:cursor-pointer">
+                class="ml-1 md:ml-0 mb-0 md:mb-1 overflow-hidden rounded inline-block w-1/4 md:w-full h-full md:h-1/4 hover:border-2 hover:border-green-blue hover:cursor-pointer">
                 <img class="object-cover  hover:scale-125 w-full h-full transition-transform"
                     [src]="publicUrl + image.url">
             </div>

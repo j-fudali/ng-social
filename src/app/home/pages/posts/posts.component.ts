@@ -1,30 +1,28 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewPostFormComponent } from 'src/app/shared/components/new-post-form/new-post-form.component';
-import { AddNewPostButtonComponent } from 'src/app/shared/components/add-new-post-button/add-new-post-button.component';
 import { CommentsComponent } from 'src/app/shared/components/comments/comments.component';
 import { PostsListComponent } from './components/posts-list/posts-list.component';
 import { Store } from '@ngrx/store';
 import { posts } from 'src/app/shared/store/posts/posts.selectors';
 import { PostsActions } from 'src/app/shared/store/posts/posts.actions';
-import { map, scan } from 'rxjs';
-import {
-  CommentsAction,
-  showCommentsComponent,
-} from 'src/app/shared/store/comments';
+import { Subscription, map, scan } from 'rxjs';
+import { CommentsAction, comments } from 'src/app/shared/store/comments';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { PhotoSliderComponent } from 'src/app/shared/components/photo-slider/photo-slider.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { LoaderComponent } from 'src/app/shared/components/loader/loader.component';
+import { AddNewPostComponent } from './components/add-new-post/add-new-post.component';
+import { NewPost } from 'src/app/shared/interfaces/posts/new-post';
+import { Post } from 'src/app/shared/interfaces/posts/post';
+import { ReactionsActions } from 'src/app/shared/store/reactions/reactions.action';
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
     NewPostFormComponent,
-    AddNewPostButtonComponent,
     CommentsComponent,
     PostsListComponent,
     LoaderComponent,
@@ -47,56 +45,46 @@ import { LoaderComponent } from 'src/app/shared/components/loader/loader.compone
     ]),
   ],
 })
-export class PostsComponent implements OnInit {
+export class PostsComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   private breakpointObserver = inject(BreakpointObserver);
   private dialog = inject(Dialog);
-  posts$ = this.store.select(posts).pipe(
-    scan((acc, curr) => {
-      if (acc?.result && curr?.result) {
-        return { result: [...acc.result, ...curr.result], count: curr.count };
-      }
-      return curr;
-    })
-  );
-  showCommentsComponent$ = this.store.select(showCommentsComponent);
-  commentsModalRef: DialogRef<Dialog, ModalComponent>;
-  postIdOfComments: string | null;
+  private sub: Subscription;
+  posts$ = this.store.select(posts);
 
+  comments$ = this.store.select(comments);
+  commentsDialogRef: DialogRef<CommentsComponent, CommentsComponent>;
   page: number = 1;
   limit: number = 4;
   ngOnInit(): void {
     this.store.dispatch(
       PostsActions.load({ pagination: { page: this.page, limit: this.limit } })
     );
-    this.breakpointObserver
+    this.sub = this.breakpointObserver
       .observe('(max-width: 768px)')
       .pipe(map((v) => v.matches))
       .subscribe((v) => {
-        if (!v && this.commentsModalRef) this.commentsModalRef.close();
+        if (!v && this.commentsDialogRef) this.commentsDialogRef.close();
       });
+  }
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
   openComments(postId: string) {
-    if (postId !== this.postIdOfComments) {
-      this.postIdOfComments = postId;
-      this.store.dispatch(CommentsAction.load({ postId }));
-    }
-    if (this.breakpointObserver.isMatched('(max-width: 768px)')) {
-      this.commentsModalRef = this.dialog.open(ModalComponent, {
-        data: { component: CommentsComponent },
-      });
-    }
-  }
-  closeComments() {
-    this.store.dispatch(CommentsAction.componentClose());
-    this.postIdOfComments = null;
+    this.store.dispatch(CommentsAction.load({ postId }));
+    this.commentsDialogRef = this.dialog.open(CommentsComponent, {
+      width: '50%',
+      height: '90%',
+      data: {
+        comments: this.comments$,
+      },
+    });
   }
   openImagesSlider(images: { url: string }[]) {
     this.store.dispatch(PostsActions.setImages({ images }));
-    this.dialog.open(ModalComponent, {
-      data: {
-        component: PhotoSliderComponent,
-      },
+    this.dialog.open(PhotoSliderComponent, {
+      width: '100%',
+      height: '100%',
     });
   }
   onPostsScroll(count: number) {
@@ -108,5 +96,34 @@ export class PostsComponent implements OnInit {
         })
       );
     }
+  }
+  openNewPostDialog() {
+    const ref = this.dialog.open(AddNewPostComponent, {
+      minWidth: '50%',
+      maxWidth: '80%',
+    });
+    ref.closed.subscribe((result) => {
+      if (result)
+        this.store.dispatch(PostsActions.addPost({ post: result as NewPost }));
+    });
+  }
+  reactionAdd(event: { postId: string; reaction: string }) {
+    this.store.dispatch(
+      PostsActions.addReactionToPost({
+        postId: event.postId,
+        reaction: event.reaction,
+      })
+    );
+  }
+  reactionChange(event: { postId: string; reaction: string }) {
+    this.store.dispatch(
+      ReactionsActions.changeReaction({
+        postId: event.postId,
+        reaction: event.reaction,
+      })
+    );
+  }
+  trackByFn(index: number, post: Post): string {
+    return post._id;
   }
 }
