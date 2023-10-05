@@ -1,15 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostBinding,
-  inject,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  AbstractControl,
-  Form,
   FormBuilder,
-  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -20,34 +12,35 @@ import { FileUploadComponent } from 'src/app/shared/components/file-upload/file-
 import { DialogModule, DialogRef } from '@angular/cdk/dialog';
 import { NewPost } from 'src/app/shared/interfaces/posts/new-post';
 import { ToggleButtonComponent } from 'src/app/shared/components/toggle-button/toggle-button.component';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { DialogComponent } from 'src/app/shared/components/dialog/dialog.component';
 
 @Component({
   selector: 'app-add-new-post',
   standalone: true,
   imports: [
     CommonModule,
+    DialogComponent,
     ReactiveFormsModule,
     FormControlComponent,
     FileUploadComponent,
-    DialogModule,
     ToggleButtonComponent,
+    PickerComponent,
   ],
   templateUrl: './add-new-post.component.html',
   styleUrls: ['./add-new-post.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddNewPostComponent {
   private fb = inject(FormBuilder);
   private dialogRef = inject(DialogRef);
+  cursorPosition: number | undefined;
+  emojiOpened: boolean = false;
   newPostForm: FormGroup = this.fb.nonNullable.group({
     title: ['', Validators.required],
     text: ['', Validators.required],
     newCategory: [''],
     categories: [[], [Validators.required]],
-    visibility: [
-      'public',
-      [Validators.required, visibilityValidator(['public', 'private'])],
-    ],
+    visibility: [true, [Validators.required]],
     files: [[]],
   });
 
@@ -70,6 +63,12 @@ export class AddNewPostComponent {
   get files() {
     return this.newPostForm.get('files');
   }
+  openEmoji() {
+    this.emojiOpened = true;
+  }
+  closeEmoji() {
+    this.emojiOpened = false;
+  }
   addCategory() {
     if (this.newCategory?.value != '') {
       this.categories?.setValue([
@@ -82,18 +81,28 @@ export class AddNewPostComponent {
   removeCategory(id: number) {
     (this.categories?.value as string[]).splice(id, 1);
   }
-  close() {
-    this.dialogRef.close();
-  }
 
+  addEmoji(e: any) {
+    const postText = this.newPostForm.get('text');
+    postText?.setValue(
+      postText.value?.slice(0, this.cursorPosition) +
+        e.emoji.native +
+        postText.value?.slice(this.cursorPosition)
+    );
+    this.emojiOpened = false;
+  }
+  setCursorPosition(e: any) {
+    this.cursorPosition = e.target.selectionStart;
+  }
   submit() {
     if (this.newPostForm.dirty && this.newPostForm.valid) {
+      const files = [...this.files?.value];
       const post: NewPost = {
         title: this.title?.value,
         text: this.text?.value,
         categories: this.categories?.value,
-        visibility: this.visibility?.value,
-        files: this.files?.value,
+        visibility: this.visibility?.value ? 'public' : 'private',
+        files,
       };
       this.dialogRef.close(post);
     }

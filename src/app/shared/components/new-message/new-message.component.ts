@@ -1,38 +1,42 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-new-message',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './new-message.component.html',
   styleUrls: ['./new-message.component.scss'],
 })
 export class NewMessageComponent {
-  private fb = inject(FormBuilder);
+  @Output() onSend = new EventEmitter<{ message: string; image?: File }>();
+  @Input() multiply: boolean = false;
   imagesPreview: string[] = [];
-  newMessageForm = this.fb.group({
-    text: ['', Validators.required],
-    files: [[], Validators.required],
-  });
+  message: string;
+  image: File;
   onImagesSelect(event: Event) {
-    const images = (event.target as any).files;
-    for (let img of images) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagesPreview.push(e.target.result);
-      };
-      reader.readAsDataURL(img);
-    }
-    console.log(this.imagesPreview);
+    const image = (event.target as any).file;
+    console.log(image);
+    // for (let img of images) {
+    //   const reader = new FileReader();
+    //   reader.onload = (e: any) => {
+    //     this.imagesPreview.push(e.target.result);
+    //   };
+    //   reader.readAsDataURL(img);
+    // }
+    // this.image = [...images];
   }
   remove(index: number) {
     this.imagesPreview.splice(index, 1);
+    // this.images.splice(index, 1);
+  }
+  submit() {
+    //   if (this.message != '') {
+    //     if (this.images.length > 0) {
+    //       this.onSend.emit({ message: this.message, image: this.image });
+    //     }
+    //     this.onSend.emit({ message: this.message });
+    //   }
   }
 }

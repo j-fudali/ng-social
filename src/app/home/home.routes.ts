@@ -1,4 +1,9 @@
-import { Route } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  ResolveFn,
+  Route,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { PostsComponent } from './pages/posts/posts.component';
 import { GroupsComponent } from './pages/groups/groups.component';
 import { HomeComponent } from './home.component';
@@ -6,6 +11,7 @@ import { GroupComponent } from './pages/groups/pages/group/group.component';
 import { ChatsComponent } from './pages/chats/chats.component';
 import { ChatComponent } from './pages/chats/pages/chat/chat.component';
 import { NoChatSelectedComponent } from './pages/chats/pages/no-chat-selected/no-chat-selected.component';
+import { SearchComponent } from './pages/posts/pages/search/search.component';
 
 export default [
   {
@@ -15,6 +21,7 @@ export default [
       {
         path: '',
         component: PostsComponent,
+        children: [{ path: 'search', component: SearchComponent }],
       },
       {
         path: 'groups',

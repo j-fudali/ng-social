@@ -1,19 +1,16 @@
 import { Reaction } from '../reactions/reactions';
+import { PublicUser } from '../user/public-user';
 
 export interface Post {
   _id: string;
   title: string;
   text: string;
-  author: {
-    _id: string;
-    username: string;
-    firstname: string;
-    lastname: string;
-  };
+  author: PublicUser;
   categories: string[];
   reactions: Reaction[];
-  files: {
+  files?: {
     url: string;
   }[];
+  visibility: string;
   createdAt: Date;
 }

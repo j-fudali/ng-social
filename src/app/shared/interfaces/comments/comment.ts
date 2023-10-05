@@ -6,5 +6,5 @@ export interface Comment {
   text: string;
   author: PublicUser;
   reactions: Reaction[];
-  image: string;
+  image?: string;
 }

@@ -40,7 +40,7 @@
     @apply p-1 border-2 bg-white border-green-blue rounded focus:border-green-blue outline-none transition;
   }
   .link {
-    @apply hover:text-green-blue text-xl;
+    @apply hover:text-green-blue;
   }
   .info-link {
     @apply flex gap-1 p-4 rounded-full shadow bg-picton-blue text-base w-auto;
@@ -61,7 +61,7 @@
     @apply text-red-700;
   }
   .tag {
-    @apply p-1  rounded-full shadow bg-green-blue text-sm md:text-base text-white dark:text-black;
+    @apply p-1  rounded-full shadow bg-picton-blue text-sm md:text-base text-white dark:text-black;
   }
   .thumbnail {
     @apply rounded-full shadow overflow-hidden w-10 h-10;

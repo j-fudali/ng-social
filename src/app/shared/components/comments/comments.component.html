@@ -1,28 +1,17 @@
-<div class="h-full w-full border-x rounded flex flex-col justify-between overflow-auto bg-white dark:bg-slate-700">
-    <div>
-        <div class="sticky top-0 bg-white dark:bg-slate-700  border-y flex justify-center md:justify-between">
-            <div class="hidden md:block"></div>
-            <h3 class="text-lg">Comments</h3>
-            <button class="hidden md:block" (click)="close()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                    <path
-                        d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                </svg>
-            </button>
-        </div>
-        <div class="flex flex-col gap-1 text-sm">
-            <ng-container *ngIf="(data.comments | async) as comments; else loading">
-                <ng-container *ngIf="comments.length > 0; else noComments">
-                    <app-comment *ngFor="let comment of comments"></app-comment>
-                </ng-container>
-                <ng-template #noComments>
-                    <h3 class="text-center text-lg font-bold">No comments yet</h3>
-                </ng-template>
+<app-dialog class="h-full" *ngIf="data.commentsState| async as state" title="Comments">
+    <h4 class="text-xl text-end mr-3">Number of comments: {{state.pagination.count}}</h4>
+    <div class="overflow-y-auto flex flex-col items-center gap-2 px-4 py-2" infiniteScroll>
+        <ng-container *ngIf="!state.loading; else loading">
+            <ng-container *ngIf="state.comments.length > 0; else noComments">
+                <app-comment class="w-full md:w-3/4 lg:w-1/2" *ngFor="let comment of state.comments"></app-comment>
             </ng-container>
-            <ng-template #loading>
-                <app-loader></app-loader>
+            <ng-template #noComments>
+                <h3 class="text-center text-lg font-bold">No comments yet</h3>
             </ng-template>
-        </div>
+        </ng-container>
+        <ng-template #loading>
+            <app-loader></app-loader>
+        </ng-template>
     </div>
-    <app-new-message class="sticky bottom-0 border-b bg-white dark:bg-slate-700 "></app-new-message>
-</div>
+    <app-new-message (onSend)="sendMessage($event)" class="mt-auto bg-white dark:bg-slate-700 "></app-new-message>
+</app-dialog>

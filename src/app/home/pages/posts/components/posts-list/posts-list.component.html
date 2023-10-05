@@ -1,6 +1,0 @@
-<div class="h-full w-full flex flex-col gap-2 px-1 pb-1 overflow-auto" infiniteScroll [infiniteScrollDistance]="3"
-    [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="onScroll()">
-    <app-post (onReactionAdd)="addReaction($event)" (onReactionChange)="changeReaction($event)"
-        (onOpenImageSlider)="openImageSlider($event)" (onOpenComments)="openComments($event)"
-        *ngFor="let post of posts; trackBy: trackBy" [post]="post"></app-post>
-</div>

@@ -1,14 +1,28 @@
-<div class="flex justify-center gap-2 pb-2">
-    <ng-container *ngIf="posts$ | async as posts; else loading">
-        <app-posts-list (onReactionAdd)="reactionAdd($event)" (onReactionChange)="reactionChange($event)"
-            (onPostListScroll)="onPostsScroll(posts.count)" (onOpenImageSlider)="openImagesSlider($event)"
-            (onOpenComments)="openComments($event)" [posts]="posts.result"
-            class="w-full md:w-3/5 h-screen"></app-posts-list>
+<div class="flex flex-col h-screen items-center gap-2 pb-2">
+    <ng-container *ngIf="!(loading$ | async); else loading">
+        <ng-container *ngIf="posts$ | async as posts">
+            <ng-container *ngIf="posts.length > 0; else noPosts">
+                <h2 class="w-full md:w-3/5 text-xl md:text-2xl font-bold px-1" *ngIf="searchText">Results</h2>
+                <div *ngIf="pagination$ | async as pagination"
+                    class="w-full md:w-3/5 h-screen flex flex-col gap-2 px-1 pb-1 overflow-auto" infiniteScroll
+                    [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50" [scrollWindow]="false"
+                    (scrolled)="onScroll(pagination)">
+                    <app-post (onReactionAdd)="addReaction($event)" (onReactionChange)="changeReaction($event)"
+                        (onOpenImageSlider)="openImagesSlider($event)" (onOpenComments)="openComments($event)"
+                        (onDownloadFilesOpen)="openDownloadFiles($event)" *ngFor="let post of posts" [post]="post"
+                        [userId]="userId"></app-post>
+                </div>
+            </ng-container>
+        </ng-container>
+        <ng-template #noPosts>
+            <h2 class="text-xl font-bold">No posts found</h2>
+        </ng-template>
     </ng-container>
     <ng-template #loading>
         <app-loader class="h-screen"></app-loader>
     </ng-template>
 </div>
-<button (click)="openNewPostDialog()" class="fixed bottom-4 right-2 p-2 btn-outline text-center justify-center">
+<button *ngIf="!searchText" (click)="openNewPostDialog()"
+    class="fixed bottom-4 right-2 p-2 btn-outline text-center justify-center">
     New post
 </button>

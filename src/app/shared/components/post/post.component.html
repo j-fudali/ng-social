@@ -8,17 +8,19 @@
             <span>{{post.author.firstname + ' ' + post.author.lastname}}</span>
         </div>
     </div>
-    <ng-container *ngIf="post.files | filesFilter:'images' as images">
-        <div *ngIf="images.length > 0" (click)="openImagesSlider()"
-            class="relative hover:cursor-pointer overflow-hidden flex h-[35vh]">
-            <img class="object-cover" *ngIf="images[0]" [ngSrc]="publicUrl + images[0].url" fill priority>
-            <div
-                class="absolute bottom-1 right-1  h-6 w-6 rounded-full p-1 flex justify-center items-center bg-green-blue text-black">
-                <span class="text-white">
-                    +{{images.length-1}}
-                </span>
+    <ng-container *ngIf="post.files">
+        <ng-container *ngIf="post.files | filesFilter:'images' as images">
+            <div *ngIf="images.length > 0" (click)="openImagesSlider()"
+                class="relative hover:cursor-pointer overflow-hidden flex h-[35vh]">
+                <img class="object-cover" *ngIf="images[0]" [ngSrc]="publicUrl + images[0].url" fill priority>
+                <div *ngIf="images.length > 1"
+                    class="absolute bottom-1 right-1  h-6 w-6 rounded-full p-1 flex justify-center items-center bg-green-blue text-black">
+                    <span class="text-white">
+                        +{{images.length-1}}
+                    </span>
+                </div>
             </div>
-        </div>
+        </ng-container>
     </ng-container>
     <div class="p-1 flex flex-col">
         <div class="flex justify-between items-center">
@@ -36,9 +38,9 @@
         <small class="self-end">{{post.createdAt | date:'dd.MM.yyyy hh:mm'}}</small>
     </div>
     <hr>
-    <app-bottom-panel [filesNumber]="(post.files | filesFilter:'files').length"
+    <app-bottom-panel [filesNumber]="post.files ? (post.files | filesFilter:'files').length : 0"
         [likesNumber]="(post.reactions | reaction:'like').length"
-        [dislikesNumber]="(post.reactions | reaction:'dislikes').length" [lastReaction]="lastReaction"
-        (onOpenDownloadFiles)="openDownloadFiles(post.files)" (onCommentsOpen)="openComments()"
-        (onReaction)="react($event)"></app-bottom-panel>
+        [dislikesNumber]="(post.reactions | reaction:'dislikes').length" [lastReaction]="userReaction"
+        (onOpenDownloadFiles)="openDownloadFiles(post.files!)" (onCommentsOpen)="openComments()"
+        (onReactionAdd)="reactionAdd($event)" (onReactionChange)="reactionChange($event)"></app-bottom-panel>
 </div>

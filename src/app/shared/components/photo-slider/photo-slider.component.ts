@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment.development';
 import { Store } from '@ngrx/store';
 import { sliderImages } from '../../store/posts';
 import { tap } from 'rxjs';
-import { DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 
 @Component({
   selector: 'app-photo-slider',
@@ -15,11 +15,10 @@ import { DialogRef } from '@angular/cdk/dialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PhotoSliderComponent {
-  private store = inject(Store);
   private dialogRef = inject(DialogRef);
-  sliderImages$ = this.store.select(sliderImages);
+  public data: { images: { url: string }[] } = inject(DIALOG_DATA);
   publicUrl = environment.url + '/';
-  selectedImage: string;
+  selectedImage: string = this.data.images[0].url;
   onSelect(image: string) {
     this.selectedImage = image;
   }

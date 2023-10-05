@@ -1,13 +1,20 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NewPostFormComponent } from 'src/app/shared/components/new-post-form/new-post-form.component';
 import { CommentsComponent } from 'src/app/shared/components/comments/comments.component';
-import { PostsListComponent } from './components/posts-list/posts-list.component';
 import { Store } from '@ngrx/store';
-import { posts } from 'src/app/shared/store/posts/posts.selectors';
+import {
+  loading,
+  pagination,
+  posts,
+} from 'src/app/shared/store/posts/posts.selectors';
 import { PostsActions } from 'src/app/shared/store/posts/posts.actions';
-import { Subscription, map, scan } from 'rxjs';
-import { CommentsAction, comments } from 'src/app/shared/store/comments';
+import { Subject, map, takeUntil, tap } from 'rxjs';
+import {
+  CommentsAction,
+  comments,
+  commentsPagination,
+  selectComments,
+} from 'src/app/shared/store/comments';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Dialog, DialogRef } from '@angular/cdk/dialog';
 import { PhotoSliderComponent } from 'src/app/shared/components/photo-slider/photo-slider.component';
@@ -16,16 +23,22 @@ import { LoaderComponent } from 'src/app/shared/components/loader/loader.compone
 import { AddNewPostComponent } from './components/add-new-post/add-new-post.component';
 import { NewPost } from 'src/app/shared/interfaces/posts/new-post';
 import { Post } from 'src/app/shared/interfaces/posts/post';
-import { ReactionsActions } from 'src/app/shared/store/reactions/reactions.action';
+import { DownloadFilesListComponent } from 'src/app/shared/components/download-files-list/download-files-list.component';
+import { UsersService } from 'src/app/core/services/users.service';
+import { SharedActions } from 'src/app/shared/store/shared/shared.actions';
+import { Pagination } from 'src/app/shared/interfaces/pagination';
+import { ActivatedRoute } from '@angular/router';
+import { PostComponent } from 'src/app/shared/components/post/post.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
-    NewPostFormComponent,
     CommentsComponent,
-    PostsListComponent,
+    PostComponent,
     LoaderComponent,
+    InfiniteScrollModule,
   ],
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.scss'],
@@ -47,36 +60,44 @@ import { ReactionsActions } from 'src/app/shared/store/reactions/reactions.actio
 })
 export class PostsComponent implements OnInit, OnDestroy {
   private store = inject(Store);
+  private route = inject(ActivatedRoute);
   private breakpointObserver = inject(BreakpointObserver);
   private dialog = inject(Dialog);
-  private sub: Subscription;
+  private usersService = inject(UsersService);
   posts$ = this.store.select(posts);
-
-  comments$ = this.store.select(comments);
+  loading$ = this.store.select(loading);
+  pagination$ = this.store.select(pagination);
+  userId = this.usersService.getUserId();
+  commentsState$ = this.store.select(selectComments);
+  searchText: string | null;
   commentsDialogRef: DialogRef<CommentsComponent, CommentsComponent>;
-  page: number = 1;
-  limit: number = 4;
+
+  destroy$ = new Subject();
   ngOnInit(): void {
-    this.store.dispatch(
-      PostsActions.load({ pagination: { page: this.page, limit: this.limit } })
-    );
-    this.sub = this.breakpointObserver
-      .observe('(max-width: 768px)')
-      .pipe(map((v) => v.matches))
-      .subscribe((v) => {
-        if (!v && this.commentsDialogRef) this.commentsDialogRef.close();
-      });
+    this.route.queryParamMap
+      .pipe(
+        map((params) => params.get('search')),
+        tap((v) =>
+          v
+            ? this.store.dispatch(PostsActions.searchPublic({ search: v }))
+            : this.store.dispatch(PostsActions.load({}))
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((v) => (this.searchText = v));
   }
   ngOnDestroy(): void {
-    this.sub.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
   openComments(postId: string) {
     this.store.dispatch(CommentsAction.load({ postId }));
     this.commentsDialogRef = this.dialog.open(CommentsComponent, {
-      width: '50%',
+      minWidth: '50%',
+      maxWidth: '80%',
       height: '90%',
       data: {
-        comments: this.comments$,
+        commentsState: this.commentsState$,
       },
     });
   }
@@ -85,17 +106,21 @@ export class PostsComponent implements OnInit, OnDestroy {
     this.dialog.open(PhotoSliderComponent, {
       width: '100%',
       height: '100%',
+      data: {
+        images,
+      },
     });
   }
-  onPostsScroll(count: number) {
-    if (count > this.page * this.limit) {
-      this.page++;
-      this.store.dispatch(
-        PostsActions.load({
-          pagination: { page: this.page, limit: this.limit },
-        })
-      );
-    }
+  onScroll(pagination: Pagination) {
+    if (pagination.page * pagination.limit < pagination.count!)
+      this.searchText
+        ? this.store.dispatch(
+            PostsActions.searchPublic({
+              search: this.searchText,
+              page: pagination.page + 1,
+            })
+          )
+        : this.store.dispatch(PostsActions.load({ page: pagination.page + 1 }));
   }
   openNewPostDialog() {
     const ref = this.dialog.open(AddNewPostComponent, {
@@ -103,11 +128,22 @@ export class PostsComponent implements OnInit, OnDestroy {
       maxWidth: '80%',
     });
     ref.closed.subscribe((result) => {
-      if (result)
+      if (result) {
         this.store.dispatch(PostsActions.addPost({ post: result as NewPost }));
+        this.store.dispatch(SharedActions.showSpinner());
+      }
     });
   }
-  reactionAdd(event: { postId: string; reaction: string }) {
+  openDownloadFiles(files: { url: string }[]) {
+    this.dialog.open(DownloadFilesListComponent, {
+      minWidth: '50%',
+      maxWidth: '80%',
+      data: {
+        files,
+      },
+    });
+  }
+  addReaction(event: { postId: string; reaction: string }) {
     this.store.dispatch(
       PostsActions.addReactionToPost({
         postId: event.postId,
@@ -115,15 +151,20 @@ export class PostsComponent implements OnInit, OnDestroy {
       })
     );
   }
-  reactionChange(event: { postId: string; reaction: string }) {
+  changeReaction(event: {
+    postId: string;
+    reactionId: string;
+    reaction: string;
+  }) {
     this.store.dispatch(
-      ReactionsActions.changeReaction({
+      PostsActions.changeReactionToPost({
         postId: event.postId,
-        reaction: event.reaction,
+        reactionId: event.reactionId,
+        newReaction: event.reaction,
       })
     );
   }
-  trackByFn(index: number, post: Post): string {
+  trackByPosts(index: number, post: Post): string {
     return post._id;
   }
 }

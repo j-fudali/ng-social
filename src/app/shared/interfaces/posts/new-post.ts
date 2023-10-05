@@ -3,5 +3,5 @@ export interface NewPost {
   text: string;
   categories: string[];
   visibility: string;
-  files: FileList;
+  files: File[];
 }

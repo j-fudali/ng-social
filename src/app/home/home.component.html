@@ -1,8 +1,9 @@
 <div class="flex flex-wrap" *ngIf="{isDark: isDark$ | async} as darkMode" [ngClass]="darkMode.isDark ? 'dark ' : ''">
-    <app-side-nav class="md:w-1/6" *ngIf="(isSidenavOpen$ | async) || (isGtMd$ | async)">
+    <app-side-nav @slideSidenav *ngIf="(isSidenavOpen$ | async)">
     </app-side-nav>
-    <div class="flex flex-col w-full md:w-5/6">
-        <app-header [darkMode]="darkMode.isDark!" (onToggleTheme)="toggleTheme($event)" class="z-40 sticky top-0"
+    <div class="flex flex-col w-full">
+        <app-header [darkMode]="darkMode.isDark!" (onLogout)="logout()" (onResetSearch)="resetSearch()"
+            (onSearch)="search($event)" (onToggleTheme)="toggleTheme($event)" class="z-40 sticky top-0"
             (onOpenSidenav)="openSidenav()">
         </app-header>
         <div class="relative flex flex-wrap md:flex-nowrap flex-row md:gap-5 py-3 bg-gray-100 dark:bg-slate-600">

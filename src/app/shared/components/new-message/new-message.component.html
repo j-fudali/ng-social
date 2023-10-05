@@ -1,6 +1,6 @@
-<form [formGroup]="newMessageForm" class="m-2 relative">
+<div class="m-2 relative">
     <ul *ngIf="imagesPreview.length > 0" class="flex gap-1 mb-2 overflow-x-scroll">
-        <li class="relative" *ngFor="let f of imagesPreview; let i = index">
+        <li class="relative" *ngFor="let image of imagesPreview; let i = index">
             <button (click)="remove(i)" class="absolute top-0.5 left-0.5">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-4 h-4">
@@ -9,31 +9,33 @@
                 </svg>
             </button>
             <div class="w-16 h-16 overflow-hidden rounded">
-                <img class="object-cover w-full h-full" [src]="f">
+                <img class="object-cover w-full h-full" [src]="image">
             </div>
         </li>
     </ul>
-    <textarea formControlName="text" rows="1"
-        class="pl-4 pr-20 py-2 rounded-full shadow bg-picton-blue border border-green-blue resize-none w-full outline-none overflow-hidden dark:bg-slate-800"
-        name="new-message" id="new-message"></textarea>
-    <div class="absolute right-4 top-3 flex gap-2">
-        <button class="btn-icon" (click)="files.click()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                <path fill-rule="evenodd"
-                    d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z"
-                    clip-rule="evenodd" />
-            </svg>
+    <div class="relative">
+        <textarea [(ngModel)]="message" rows="1"
+            class="pl-4 pr-20 py-2 rounded-full  border-2 border-green-blue resize-none w-full outline-none overflow-hidden dark:bg-slate-800"
+            name="new-message" id="new-message"></textarea>
+        <div class="absolute right-4 top-3 flex gap-2">
+            <button class="btn-icon" (click)="files.click()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path fill-rule="evenodd"
+                        d="M15.621 4.379a3 3 0 00-4.242 0l-7 7a3 3 0 004.241 4.243h.001l.497-.5a.75.75 0 011.064 1.057l-.498.501-.002.002a4.5 4.5 0 01-6.364-6.364l7-7a4.5 4.5 0 016.368 6.36l-3.455 3.553A2.625 2.625 0 119.52 9.52l3.45-3.451a.75.75 0 111.061 1.06l-3.45 3.451a1.125 1.125 0 001.587 1.595l3.454-3.553a3 3 0 000-4.242z"
+                        clip-rule="evenodd" />
+                </svg>
 
-        </button>
-        <button class="btn-icon ">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                <path
-                    d="M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z" />
-            </svg>
+            </button>
+            <button class="btn-icon" (click)="submit()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M3.105 2.289a.75.75 0 00-.826.95l1.414 4.925A1.5 1.5 0 005.135 9.25h6.115a.75.75 0 010 1.5H5.135a1.5 1.5 0 00-1.442 1.086l-1.414 4.926a.75.75 0 00.826.95 28.896 28.896 0 0015.293-7.154.75.75 0 000-1.115A28.897 28.897 0 003.105 2.289z" />
+                </svg>
 
-        </button>
+            </button>
 
+        </div>
     </div>
-    <input (change)="onImagesSelect($event)" formControlName="files" #files class="hidden" multiple accept="image/*"
-        type="file" name="images" id="images">
-</form>
+    <input (change)="onImagesSelect($event)" #files class="hidden" [multiple]="multiply" accept="image/*" type="file"
+        name="images" id="images">
+</div>

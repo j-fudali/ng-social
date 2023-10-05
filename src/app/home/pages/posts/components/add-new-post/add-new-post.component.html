@@ -1,42 +1,54 @@
-<h1 class="text-center text-xl font-bold">Add new post</h1>
-<form class="flex flex-col gap-2" [formGroup]="newPostForm" (ngSubmit)="submit()">
-    <div class="flex items-end gap-2">
-        <app-form-control class="w-1/2">
-            <label for="title" label>Title</label>
-            <input formControlName="title" id="title" type="text" input>
-        </app-form-control>
-        <app-toggle-button formControlName="visibility" name="Is it public?"></app-toggle-button>
-    </div>
-    <app-form-control>
-        <label for="text" label>Text</label>
-        <textarea id="text" formControlName="text" class="p-1 resize-none" rows="5" input
-            placeholder="The essence of your post..."></textarea>
-    </app-form-control>
-    <app-form-control class="relative">
-        <label for="categories" label>Categories</label>
-        <input maxlength="25" formControlName="newCategory" type="text" id="categories" input>
-        <button type="button" (click)="addCategory()" class="btn-icon absolute top-1/2 right-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                <path
-                    d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-            </svg>
-        </button>
-    </app-form-control>
-    <ul class="flex flex-wrap gap-1">
-        <li *ngFor="let c of categories?.value; let i = index" class="tag relative flex gap-1 items-center">{{c}}
-            <button (click)="removeCategory(i)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                    <path
-                        d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+<app-dialog title="Add new post">
+    <form class="flex flex-col gap-2 p-2" [formGroup]="newPostForm" (ngSubmit)="submit()">
+        <div class="flex items-end gap-2">
+            <app-form-control class="w-1/2">
+                <label for="title" label>Title</label>
+                <input formControlName="title" id="title" type="text" input>
+            </app-form-control>
+            <app-toggle-button formControlName="visibility" name="Is it public?"></app-toggle-button>
+        </div>
+        <app-form-control>
+            <label for="text" label>Text</label>
+            <textarea (keyup)="setCursorPosition($event)" (mouseup)="setCursorPosition($event)" id="text"
+                formControlName="text" class="p-1 resize-none" rows="5" input
+                placeholder="The essence of your post..."></textarea>
+            <button class="ml-auto" type="button" (click)="openEmoji()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
                 </svg>
             </button>
-        </li>
-    </ul>
-    <app-form-control>
-        <app-file-upload formControlName="files" input></app-file-upload>
-    </app-form-control>
-    <div class="self-end flex gap-1">
-        <button class="btn-outline" type="submit">Add post</button>
-        <button type="button" class="btn-primary" (click)="close()">Close</button>
-    </div>
-</form>
+            <div *ngIf="emojiOpened"
+                class="z-50 fixed top-0 left-0 h-screen w-full bg-black bg-opacity-50 flex justify-center items-center">
+                <emoji-mart class="z-10" (emojiClick)="addEmoji($event)"></emoji-mart>
+            </div>
+        </app-form-control>
+        <app-form-control class="relative">
+            <label for="categories" label>Categories</label>
+            <input maxlength="25" formControlName="newCategory" type="text" id="categories" input>
+            <button type="button" (click)="addCategory()" class="btn-icon absolute top-1/2 right-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+            </button>
+        </app-form-control>
+        <ul class="flex flex-wrap gap-1">
+            <li *ngFor="let c of categories?.value; let i = index" class="tag relative flex gap-1 items-center">{{c}}
+                <button (click)="removeCategory(i)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path
+                            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                    </svg>
+                </button>
+            </li>
+        </ul>
+        <app-form-control>
+            <app-file-upload formControlName="files" input></app-file-upload>
+        </app-form-control>
+        <div class="self-end flex gap-1">
+            <button class="btn-outline" type="submit">Add post</button>
+        </div>
+    </form>
+</app-dialog>

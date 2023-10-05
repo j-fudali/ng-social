@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactionPipe } from 'src/app/shared/pipes/reaction.pipe';
+import { Reaction } from 'src/app/shared/interfaces/reactions/reactions';
 
 @Component({
   selector: 'app-bottom-panel',
@@ -19,11 +20,12 @@ import { ReactionPipe } from 'src/app/shared/pipes/reaction.pipe';
 export class BottomPanelComponent {
   @Input({ required: true }) likesNumber: number;
   @Input({ required: true }) dislikesNumber: number;
-  @Input({ required: true }) lastReaction: string | null;
+  @Input({ required: true }) lastReaction: string | undefined;
   @Input() filesNumber: number;
   @Output() onCommentsOpen = new EventEmitter<void>();
   @Output() onOpenDownloadFiles = new EventEmitter<void>();
-  @Output() onReaction = new EventEmitter<string>();
+  @Output() onReactionAdd = new EventEmitter<string>();
+  @Output() onReactionChange = new EventEmitter<string>();
 
   commentsNumber: number = 0;
   openComments() {
@@ -33,19 +35,19 @@ export class BottomPanelComponent {
     this.onOpenDownloadFiles.emit();
   }
   like() {
-    if (this.lastReaction != 'like') {
-      this.onReaction.emit('like');
-      this.likesNumber++;
-      if (this.lastReaction != null) this.dislikesNumber--;
-      this.lastReaction = 'like';
+    if (this.lastReaction === undefined) this.onReactionAdd.emit('like');
+    if (this.lastReaction === 'dislike') {
+      this.onReactionChange.emit('like');
+      this.dislikesNumber--;
     }
+    if (this.lastReaction !== 'like') this.likesNumber++;
   }
   dislike() {
-    if (this.lastReaction != 'dislike') {
-      this.onReaction.emit('dislike');
-      this.dislikesNumber++;
-      if (this.lastReaction != null) this.likesNumber--;
-      this.lastReaction = 'dislike';
+    if (this.lastReaction === undefined) this.onReactionAdd.emit('dislike');
+    if (this.lastReaction === 'like') {
+      this.onReactionChange.emit('dislike');
+      this.likesNumber--;
     }
+    if (this.lastReaction !== 'dislike') this.dislikesNumber++;
   }
 }

@@ -12,7 +12,7 @@ export class SharedEffects {
   private actions$ = inject(Actions);
   private authService = inject(AuthService);
   private toastr = inject(ToastrService);
-  logInAndSignUpFailure = createEffect(() => {
+  failures$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(
         UserActions.logInFailure,
@@ -20,7 +20,8 @@ export class SharedEffects {
         PostsActions.loadFailure,
         PostsActions.addPostFailure,
         PostsActions.addReactionToPostFailure,
-        PostsActions.changeReactionToPostFailure
+        PostsActions.changeReactionToPostFailure,
+        PostsActions.searchPublicFailure
       ),
       tap(({ error }) => {
         const message = this.authService.getErrorMessage(error.statusCode);
@@ -29,4 +30,16 @@ export class SharedEffects {
       map(() => SharedActions.hideSpinner())
     );
   });
+  notifications$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(SharedActions.setNotification),
+        tap(({ message, mode }) =>
+          mode === 'success'
+            ? this.toastr.success(message)
+            : this.toastr.info(message)
+        )
+      ),
+    { dispatch: false }
+  );
 }

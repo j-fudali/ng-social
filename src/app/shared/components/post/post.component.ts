@@ -1,26 +1,20 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
   OnInit,
   Output,
-  inject,
 } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Dialog, DialogModule } from '@angular/cdk/dialog';
+import { DialogModule } from '@angular/cdk/dialog';
 import { LayoutModule } from '@angular/cdk/layout';
 import { Post } from '../../interfaces/posts/post';
 import { BottomPanelComponent } from './components/bottom-panel/bottom-panel.component';
 import { environment } from 'src/environments/environment.development';
 import { FilesFilterPipe } from '../../pipes/files-filter.pipe';
-import { Store } from '@ngrx/store';
-import { PostsActions } from '../../store/posts';
-import { DownloadFilesListComponent } from '../download-files-list/download-files-list.component';
 import { ReactionPipe } from '../../pipes/reaction.pipe';
-import { CookieService } from 'ngx-cookie-service';
-import { UsersService } from 'src/app/core/services/users.service';
+import { Reaction } from '../../interfaces/reactions/reactions';
 
 @Component({
   selector: 'app-post',
@@ -40,11 +34,14 @@ import { UsersService } from 'src/app/core/services/users.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostComponent implements OnInit {
-  private dialog = inject(Dialog);
-  private usersService = inject(UsersService);
-  private cd = inject(ChangeDetectorRef);
   @Input({ required: true }) post: Post;
+  @Input({ required: true }) userId: string;
   @Output() onOpenComments = new EventEmitter<string>();
+  @Output() onDownloadFilesOpen = new EventEmitter<
+    {
+      url: string;
+    }[]
+  >();
   @Output() onOpenImageSlider = new EventEmitter<{ url: string }[]>();
   @Output() onReactionAdd = new EventEmitter<{
     postId: string;
@@ -52,45 +49,46 @@ export class PostComponent implements OnInit {
   }>();
   @Output() onReactionChange = new EventEmitter<{
     postId: string;
+    reactionId: string;
     reaction: string;
   }>();
   readMore: boolean = false;
   publicUrl = environment.url + '/';
-  alreadyReacted = false;
-  lastReaction: string | null = null;
+  userReaction: string | undefined;
   ngOnInit(): void {
-    const userReaction = this.post.reactions.find(
-      (r) => r.author._id === this.usersService.getUserId()
-    );
-    if (userReaction) {
-      this.lastReaction = userReaction.reaction;
-      this.alreadyReacted = true;
-    }
+    this.userReaction = this.post.reactions.find(
+      (r) => r.author._id === this.userId
+    )?.reaction;
   }
   openImagesSlider() {
-    this.onOpenImageSlider.emit(this.post.files);
+    const images = new FilesFilterPipe().transform(this.post.files!, 'images');
+    this.onOpenImageSlider.emit(images);
   }
   openComments() {
     this.onOpenComments.emit(this.post._id);
   }
-  react(reaction: string) {
-    if (this.alreadyReacted) {
-      this.onReactionChange.emit({ postId: this.post._id, reaction });
-    } else {
-      this.onReactionAdd.emit({ postId: this.post._id, reaction });
-      this.alreadyReacted = true;
-    }
+  reactionAdd(reaction: string) {
+    this.onReactionAdd.emit({
+      postId: this.post._id,
+      reaction: reaction,
+    });
+    this.userReaction = reaction;
+  }
+  reactionChange(reaction: string) {
+    if (this.post.reactions.find((r) => r.author._id === this.userId))
+      this.onReactionChange.emit({
+        postId: this.post._id,
+        reactionId: this.post.reactions.find(
+          (r) => r.author._id === this.userId
+        )!._id,
+        reaction,
+      });
+    if (this.userReaction) this.userReaction = reaction;
   }
   openDownloadFiles(files: { url: string }[]) {
     const filteredFiles = new FilesFilterPipe().transform(files);
     if (filteredFiles.length > 0) {
-      this.dialog.open(DownloadFilesListComponent, {
-        minWidth: '50%',
-        maxWidth: '80%',
-        data: {
-          files: filteredFiles,
-        },
-      });
+      this.onDownloadFilesOpen.emit(filteredFiles);
     }
   }
   toggleReadMore() {

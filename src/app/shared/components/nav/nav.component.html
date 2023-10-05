@@ -1,0 +1,5 @@
+<div class="flex flex-col md:flex-row items-start text-lg md:items-center gap-2 md:gap-4">
+    <a (click)="closeSidenav()" *ngFor="let link of links" class="link"
+        [routerLink]="['/home/', link.url]">{{link.name}}</a>
+    <button class="btn-primary hover:cursor-pointer" (click)="logout()">Logout</button>
+</div>

@@ -12,10 +12,9 @@ import { AuthService } from './auth.service';
 export class ReactionsService {
   private http = inject(HttpClient);
   private baseUrl = environment.url + '/reactions';
-  private cookies = inject(CookieService);
   private authService = inject(AuthService);
   public updateReaction(id: string, reaction: string) {
-    return this.http.patch(
+    return this.http.patch<Reaction>(
       this.baseUrl + '/' + id,
       { reaction },
       { headers: this.authService.getHeaders() }
